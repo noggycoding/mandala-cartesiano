@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>El Arte de la Recta - Laboratorio Interactivo</title>
+<style>
+  :root {
+    --bg: #fafaf7;
+    --paper: #ffffff;
+    --ink: #1a1a1a;
+    --muted: #666;
+    --line: #d0d0d0;
+    --soft: #f3f3ef;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 0;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: var(--bg);
+    color: var(--ink);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  header {
+    background: var(--paper);
+    border-bottom: 2px solid var(--ink);
+    padding: 14px 26px;
+  }
+  header h1 { margin: 0; font-size: 22px; letter-spacing: 0.5px; }
+  header p { margin: 4px 0 0; color: var(--muted); font-size: 12px; font-style: italic; }
+  .app {
+    display: grid;
+    grid-template-columns: 340px 1fr;
+    min-height: calc(100vh - 70px);
+  }
+  .controls {
+    background: var(--paper);
+    border-right: 1px solid var(--line);
+    padding: 18px 20px;
+    overflow-y: auto;
+    max-height: calc(100vh - 70px);
+  }
+  .canvas-wrap {
+    position: relative;
+    background: var(--paper);
+    display: flex;
+    min-height: 620px;
+  }
+  canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    cursor: grab;
+  }
+  canvas:active { cursor: grabbing; }
+  .canvas-tools {
+    position: absolute; top: 10px; right: 10px;
+    display: flex; flex-direction: column; gap: 5px;
+  }
+  .canvas-tools button {
+    background: var(--paper);
+    border: 1px solid var(--ink);
+    padding: 6px 10px;
+    font-family: inherit; font-size: 12px;
+    cursor: pointer; min-width: 110px;
+  }
+  .canvas-tools button:hover { background: var(--ink); color: white; }
+  .canvas-hint {
+    position: absolute; bottom: 10px; left: 12px;
+    font-size: 11px; color: var(--muted); background: rgba(255,255,255,0.8);
+    padding: 4px 8px; border: 1px solid var(--line);
+  }
+  .section { margin-bottom: 20px; border-bottom: 1px dashed var(--line); padding-bottom: 14px; }
+  .section:last-child { border-bottom: none; }
+  .section h2 {
+    font-size: 13px; margin: 0 0 10px;
+    letter-spacing: 1.2px; text-transform: uppercase;
+    border-left: 4px solid var(--ink); padding-left: 8px;
+  }
+  .point-row { display: flex; align-items: center; gap: 6px; margin-bottom: 6px; }
+  .point-row label { width: 22px; font-weight: bold; font-size: 15px; }
+  .point-row span { color: var(--muted); font-size: 12px; }
+  .point-row input {
+    width: 62px; padding: 4px 6px;
+    border: 1px solid var(--line);
+    font-family: inherit; font-size: 13px;
+    background: var(--paper);
+  }
+  .point-row input:focus { outline: 2px solid var(--ink); border-color: var(--ink); }
+  .calc-block {
+    background: var(--soft);
+    border-left: 3px solid var(--ink);
+    padding: 8px 12px;
+    margin: 8px 0;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  .calc-label {
+    font-weight: bold; text-transform: uppercase; font-size: 10.5px;
+    color: var(--muted); margin-bottom: 4px; letter-spacing: 0.5px;
+  }
+  .calc-result {
+    font-size: 13px; font-weight: bold; margin-top: 5px;
+    border-top: 1px solid var(--line); padding-top: 4px;
+  }
+  .option-row {
+    display: flex; align-items: center; gap: 8px;
+    margin: 6px 0; font-size: 13px;
+  }
+  .option-row input[type="checkbox"] { accent-color: var(--ink); }
+  .option-row input[type="range"] { flex: 1; }
+  .option-row label { cursor: pointer; }
+  .report {
+    background: var(--paper);
+    border-top: 2px solid var(--ink);
+    padding: 22px 28px;
+  }
+  .report h2 {
+    font-size: 16px; margin: 0 0 12px;
+    letter-spacing: 1px; text-transform: uppercase;
+  }
+  .report h3 {
+    font-size: 13px; margin: 18px 0 8px;
+    letter-spacing: 0.5px; text-transform: uppercase;
+    color: var(--muted);
+  }
+  .report table {
+    width: 100%; border-collapse: collapse;
+    font-family: 'Courier New', monospace; font-size: 12px;
+  }
+  .report th {
+    text-align: left; padding: 6px 8px;
+    border-bottom: 2px solid var(--ink);
+    background: var(--soft);
+  }
+  .report td {
+    padding: 6px 8px; border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  .actions { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+  .actions button {
+    background: var(--ink); color: white; border: none;
+    padding: 8px 16px; font-family: inherit; font-size: 13px;
+    cursor: pointer;
+  }
+  .actions button.secondary {
+    background: transparent; color: var(--ink);
+    border: 1px solid var(--ink);
+  }
+  .actions button:hover { opacity: 0.85; }
+  .small { font-size: 11px; color: var(--muted); }
+  .highlight { background: #fff3a8; padding: 0 3px; }
+  @media (max-width: 880px) {
+    .app { grid-template-columns: 1fr; }
+    .controls { max-height: none; }
+    .canvas-wrap { min-height: 500px; }
+  }
+  @media print {
+    .controls, .canvas-tools, .actions { display: none; }
+    .app { grid-template-columns: 1fr; }
+    body { background: white; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>El Arte de la Recta &mdash; Laboratorio Interactivo</h1>
+  <p>Introduce los puntos, observa la geometria en tiempo real, exporta el mandala.</p>
+</header>
+
+<div class="app">
+
+  <div class="controls">
+
+    <div class="section">
+      <h2>Puntos base</h2>
+      <div class="point-row">
+        <label>A</label>
+        <span>x</span><input type="number" id="Ax" value="2" step="0.5">
+        <span>y</span><input type="number" id="Ay" value="3" step="0.5">
+      </div>
+      <div class="point-row">
+        <label>B</label>
+        <span>x</span><input type="number" id="Bx" value="8" step="0.5">
+        <span>y</span><input type="number" id="By" value="7" step="0.5">
+      </div>
+      <div class="point-row">
+        <label>C</label>
+        <span>x</span><input type="number" id="Cx" value="5" step="0.5">
+        <span>y</span><input type="number" id="Cy" value="10" step="0.5">
+      </div>
+      <p class="small">A es el centro del circulo. BC es la recta a la que se calcula la distancia.</p>
+    </div>
+
+    <div class="section">
+      <h2>Mandala</h2>
+      <div class="option-row">
+        <input type="checkbox" id="optMandala" checked>
+        <label for="optMandala">Activar radios</label>
+      </div>
+      <div class="option-row">
+        <span class="small">Numero:</span>
+        <input type="range" id="optRadios" min="4" max="24" step="2" value="12">
+        <span id="optRadiosVal" class="small">12</span>
+      </div>
+      <div class="option-row">
+        <input type="checkbox" id="optCirculosInternos" checked>
+        <label for="optCirculosInternos">Circulos concentricos</label>
+      </div>
+      <div class="option-row">
+        <input type="checkbox" id="optPoligonos" checked>
+        <label for="optPoligonos">Poligonos decorativos</label>
+      </div>
+      <div class="option-row">
+        <input type="checkbox" id="optEtiquetas" checked>
+        <label for="optEtiquetas">Etiquetas de ecuaciones</label>
+      </div>
+      <div class="option-row">
+        <input type="checkbox" id="optRejilla" checked>
+        <label for="optRejilla">Rejilla cartesiana</label>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Calculos paso a paso</h2>
+      <div id="calcArea"></div>
+    </div>
+
+  </div>
+
+  <div class="canvas-wrap">
+    <canvas id="canvas"></canvas>
+    <div class="canvas-tools">
+      <button id="btnZoomIn">Zoom +</button>
+      <button id="btnZoomOut">Zoom &minus;</button>
+      <button id="btnReset">Reiniciar</button>
+      <button id="btnFit">Ajustar</button>
+      <button id="btnExport">Exportar PNG</button>
+    </div>
+    <div class="canvas-hint">Rueda: zoom &middot; Arrastrar: mover</div>
+  </div>
+
+</div>
+
+<div class="report">
+  <h2>Reporte de la practica</h2>
+  <p class="small">Resumen completo con formulas, sustituciones y resultados. Listo para copiar y transcribir a mano.</p>
+  <div id="reportArea"></div>
+  <div class="actions">
+    <button id="btnCopyReport">Copiar reporte</button>
+    <button id="btnExport2">Exportar dibujo PNG</button>
+    <button class="secondary" id="btnPrint">Imprimir</button>
+  </div>
+</div>
+
+<script>
+'use strict';
+
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+
+let scale = 40;
+let panX = 6;
+let panY = 6;
+
+function resizeCanvas() {
+  const rect = canvas.parentElement.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  canvas.width = rect.width * dpr;
+  canvas.height = rect.height * dpr;
+  canvas.style.width = rect.width + 'px';
+  canvas.style.height = rect.height + 'px';
+  ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+  draw();
+}
+window.addEventListener('resize', resizeCanvas);
+
+function cssW() { return parseFloat(canvas.style.width) || canvas.width; }
+function cssH() { return parseFloat(canvas.style.height) || canvas.height; }
+
+function w2s(wx, wy) {
+  return {
+    x: (wx - panX) * scale + cssW() / 2,
+    y: (panY - wy) * scale + cssH() / 2
+  };
+}
+function s2w(sx, sy) {
+  return {
+    x: (sx - cssW() / 2) / scale + panX,
+    y: panY - (sy - cssH() / 2) / scale
+  };
+}
+
+function getPoints() {
+  return {
+    A: { x: +document.getElementById('Ax').value || 0, y: +document.getElementById('Ay').value || 0 },
+    B: { x: +document.getElementById('Bx').value || 0, y: +document.getElementById('By').value || 0 },
+    C: { x: +document.getElementById('Cx').value || 0, y: +document.getElementById('Cy').value || 0 }
+  };
+}
+
+function gcd(a, b) { a = Math.abs(a); b = Math.abs(b); return b === 0 ? (a || 1) : gcd(b, a % b); }
+
+function fmt(n, d) {
+  if (d === undefined) d = 2;
+  if (!isFinite(n)) return 'inf';
+  if (Math.abs(n) < 1e-10) return '0';
+  if (Number.isInteger(n)) return n.toString();
+  const r = +n.toFixed(d);
+  return r.toString();
+}
+
+function slope(P, Q) {
+  if (Math.abs(Q.x - P.x) < 1e-12) return { m: Infinity, vertical: true };
+  return { m: (Q.y - P.y) / (Q.x - P.x), vertical: false };
+}
+
+function dist(P, Q) { return Math.hypot(Q.x - P.x, Q.y - P.y); }
+
+function generalForm(P, Q) {
+  let A = Q.y - P.y;
+  let B = P.x - Q.x;
+  let C = -(A * P.x + B * P.y);
+  if (Number.isInteger(A) && Number.isInteger(B) && Number.isInteger(C)) {
+    const g = gcd(gcd(A || 1, B || 1), C || 1);
+    if (g > 1) { A /= g; B /= g; C /= g; }
+  }
+  if (A < 0 || (A === 0 && B < 0)) { A = -A; B = -B; C = -C; }
+  return { A, B, C };
+}
+
+function distPointToLine(P, line) {
+  return Math.abs(line.A * P.x + line.B * P.y + line.C) / Math.hypot(line.A, line.B);
+}
+
+function footOfPerpendicular(P, line) {
+  const { A, B, C } = line;
+  const k = (A * P.x + B * P.y + C) / (A * A + B * B);
+  return { x: P.x - A * k, y: P.y - B * k };
+}
+
+function fmtGeneral(line) {
+  const { A, B, C } = line;
+  let s = '';
+  if (A !== 0) s += (A === 1 ? 'x' : A === -1 ? '-x' : fmt(A) + 'x');
+  if (B !== 0) {
+    if (s === '') s += (B === 1 ? 'y' : B === -1 ? '-y' : fmt(B) + 'y');
+    else if (B > 0) s += ' + ' + (B === 1 ? 'y' : fmt(B) + 'y');
+    else s += ' - ' + (B === -1 ? 'y' : fmt(-B) + 'y');
+  }
+  if (C !== 0) {
+    if (s === '') s += fmt(C);
+    else if (C > 0) s += ' + ' + fmt(C);
+    else s += ' - ' + fmt(-C);
+  }
+  return (s || '0') + ' = 0';
+}
+
+function fmtSlopeIntercept(m, b) {
+  if (!isFinite(m)) return null;
+  if (Math.abs(m) < 1e-12) return 'y = ' + fmt(b);
+  let s = 'y = ';
+  if (Math.abs(m - 1) < 1e-12) s += 'x';
+  else if (Math.abs(m + 1) < 1e-12) s += '-x';
+  else s += fmt(m, 3) + 'x';
+  if (Math.abs(b) < 1e-12) {}
+  else if (b > 0) s += ' + ' + fmt(b, 3);
+  else s += ' - ' + fmt(-b, 3);
+  return s;
+}
+
+function drawGrid() {
+  if (!document.getElementById('optRejilla').checked) return;
+  ctx.strokeStyle = '#eee';
+  ctx.lineWidth = 1;
+  const tl = s2w(0, 0), br = s2w(cssW(), cssH());
+  const minX = Math.floor(tl.x) - 1, maxX = Math.ceil(br.x) + 1;
+  const minY = Math.floor(br.y) - 1, maxY = Math.ceil(tl.y) + 1;
+  ctx.beginPath();
+  for (let x = minX; x <= maxX; x++) {
+    const s = w2s(x, 0);
+    ctx.moveTo(s.x, 0); ctx.lineTo(s.x, cssH());
+  }
+  for (let y = minY; y <= maxY; y++) {
+    const s = w2s(0, y);
+    ctx.moveTo(0, s.y); ctx.lineTo(cssW(), s.y);
+  }
+  ctx.stroke();
+}
+
+function drawAxes() {
+  ctx.strokeStyle = '#000'; ctx.lineWidth = 1.5;
+  const o = w2s(0, 0);
+  ctx.beginPath();
+  ctx.moveTo(0, o.y); ctx.lineTo(cssW(), o.y);
+  ctx.moveTo(o.x, 0); ctx.lineTo(o.x, cssH());
+  ctx.stroke();
+
+  ctx.fillStyle = '#444';
+  ctx.font = '10px Georgia';
+  const tl = s2w(0, 0), br = s2w(cssW(), cssH());
+  const minX = Math.floor(tl.x), maxX = Math.ceil(br.x);
+  const minY = Math.floor(br.y), maxY = Math.ceil(tl.y);
+  ctx.textAlign = 'center';
+  for (let x = minX; x <= maxX; x++) {
+    if (x === 0) continue;
+    const s = w2s(x, 0);
+    if (s.x > 10 && s.x < cssW() - 10) ctx.fillText(x, s.x, Math.min(Math.max(s.y + 12, 12), cssH() - 4));
+  }
+  ctx.textAlign = 'right';
+  for (let y = minY; y <= maxY; y++) {
+    if (y === 0) continue;
+    const s = w2s(0, y);
+    if (s.y > 10 && s.y < cssH() - 5) ctx.fillText(y, Math.max(s.x - 4, 16), s.y + 3);
+  }
+  ctx.textAlign = 'right';
+  ctx.fillText('0', Math.max(o.x - 4, 16), Math.min(Math.max(o.y + 12, 12), cssH() - 4));
+}
+
+function drawLineThrough(P, Q, width, label, dashed) {
+  ctx.strokeStyle = '#000';
+  ctx.lineWidth = width;
+  if (dashed) ctx.setLineDash([6, 4]);
+  ctx.beginPath();
+  if (Math.abs(Q.x - P.x) < 1e-12) {
+    const sx = w2s(P.x, 0).x;
+    ctx.moveTo(sx, 0); ctx.lineTo(sx, cssH());
+  } else {
+    const m = (Q.y - P.y) / (Q.x - P.x);
+    const b = P.y - m * P.x;
+    const wxL = s2w(0, 0).x, wxR = s2w(cssW(), 0).x;
+    const sL = w2s(wxL, m * wxL + b);
+    const sR = w2s(wxR, m * wxR + b);
+    ctx.moveTo(sL.x, sL.y); ctx.lineTo(sR.x, sR.y);
+  }
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  if (label && document.getElementById('optEtiquetas').checked) {
+    const mid = { x: (P.x + Q.x) / 2, y: (P.y + Q.y) / 2 };
+    const s = w2s(mid.x, mid.y);
+    ctx.font = '11px Georgia';
+    const w = ctx.measureText(label).width + 8;
+    ctx.fillStyle = 'white';
+    ctx.fillRect(s.x + 6, s.y - 10, w, 14);
+    ctx.strokeStyle = '#000'; ctx.lineWidth = 0.5;
+    ctx.strokeRect(s.x + 6, s.y - 10, w, 14);
+    ctx.fillStyle = '#000'; ctx.textAlign = 'left';
+    ctx.fillText(label, s.x + 10, s.y);
+  }
+}
+
+function drawSegment(P, Q, width, dashed) {
+  ctx.strokeStyle = '#000'; ctx.lineWidth = width;
+  if (dashed) ctx.setLineDash([5, 3]);
+  const sP = w2s(P.x, P.y), sQ = w2s(Q.x, Q.y);
+  ctx.beginPath();
+  ctx.moveTo(sP.x, sP.y); ctx.lineTo(sQ.x, sQ.y);
+  ctx.stroke();
+  ctx.setLineDash([]);
+}
+
+function drawPoint(P, label, small) {
+  const s = w2s(P.x, P.y);
+  ctx.fillStyle = '#000';
+  ctx.beginPath();
+  ctx.arc(s.x, s.y, small ? 3 : 4.5, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.font = 'bold 12px Georgia';
+  ctx.fillStyle = '#000';
+  ctx.textAlign = 'left';
+  ctx.fillText(label + '(' + fmt(P.x) + ', ' + fmt(P.y) + ')', s.x + 8, s.y - 8);
+}
+
+function drawCircle(center, r, width) {
+  const s = w2s(center.x, center.y);
+  ctx.strokeStyle = '#000'; ctx.lineWidth = width;
+  ctx.beginPath();
+  ctx.arc(s.x, s.y, r * scale, 0, Math.PI * 2);
+  ctx.stroke();
+}
+
+function drawMandala(center, radius) {
+  if (!document.getElementById('optMandala').checked) return;
+  const n = +document.getElementById('optRadios').value;
+  const sC = w2s(center.x, center.y);
+  const R = radius * scale;
+
+  ctx.strokeStyle = '#000'; ctx.lineWidth = 0.7;
+  for (let i = 0; i < n; i++) {
+    const theta = (Math.PI * 2 * i) / n;
+    const ex = sC.x + R * Math.cos(theta);
+    const ey = sC.y - R * Math.sin(theta);
+    ctx.beginPath();
+    ctx.moveTo(sC.x, sC.y); ctx.lineTo(ex, ey);
+    ctx.stroke();
+  }
+
+  if (document.getElementById('optPoligonos').checked && n >= 6) {
+    ctx.lineWidth = 0.5;
+    ctx.beginPath();
+    for (let i = 0; i < n; i += 2) {
+      const theta = (Math.PI * 2 * i) / n;
+      const ex = sC.x + R * Math.cos(theta);
+      const ey = sC.y - R * Math.sin(theta);
+      if (i === 0) ctx.moveTo(ex, ey); else ctx.lineTo(ex, ey);
+    }
+    ctx.closePath(); ctx.stroke();
+
+    ctx.beginPath();
+    for (let i = 1; i < n; i += 2) {
+      const theta = (Math.PI * 2 * i) / n;
+      const ex = sC.x + R * Math.cos(theta);
+      const ey = sC.y - R * Math.sin(theta);
+      if (i === 1) ctx.moveTo(ex, ey); else ctx.lineTo(ex, ey);
+    }
+    ctx.closePath(); ctx.stroke();
+  }
+
+  if (document.getElementById('optCirculosInternos').checked) {
+    ctx.lineWidth = 0.7;
+    [0.25, 0.5, 0.75].forEach(k => {
+      ctx.beginPath();
+      ctx.arc(sC.x, sC.y, R * k, 0, Math.PI * 2);
+      ctx.stroke();
+    });
+  }
+}
+
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = '#fff';
+  ctx.fillRect(0, 0, cssW(), cssH());
+
+  drawGrid();
+  drawAxes();
+
+  const { A, B, C } = getPoints();
+  const lineBC = generalForm(B, C);
+  const d = distPointToLine(A, lineBC);
+
+  drawMandala(A, d);
+  drawCircle(A, d, 2);
+  drawLineThrough(A, B, 1.5, 'L1 (AB)');
+  drawLineThrough(B, C, 1.5, 'L2 (BC)');
+
+  const foot = footOfPerpendicular(A, lineBC);
+  drawSegment(A, foot, 1.5, true);
+
+  if (document.getElementById('optEtiquetas').checked) {
+    const mid = { x: (A.x + foot.x) / 2, y: (A.y + foot.y) / 2 };
+    const s = w2s(mid.x, mid.y);
+    ctx.font = '11px Georgia';
+    const txt = 'd = ' + fmt(d, 3);
+    const w = ctx.measureText(txt).width + 8;
+    ctx.fillStyle = 'white';
+    ctx.fillRect(s.x + 6, s.y - 10, w, 14);
+    ctx.strokeStyle = '#000'; ctx.lineWidth = 0.5;
+    ctx.strokeRect(s.x + 6, s.y - 10, w, 14);
+    ctx.fillStyle = '#000'; ctx.textAlign = 'left';
+    ctx.fillText(txt, s.x + 10, s.y);
+  }
+
+  drawPoint(A, 'A');
+  drawPoint(B, 'B');
+  drawPoint(C, 'C');
+  drawPoint(foot, 'P', true);
+
+  updateCalcs();
+  updateReport();
+}
+
+function updateCalcs() {
+  const { A, B, C } = getPoints();
+  const sAB = slope(A, B);
+  const sBC = slope(B, C);
+  const lineBC = generalForm(B, C);
+  const d = distPointToLine(A, lineBC);
+  const mPerp = sBC.vertical ? 0 : (Math.abs(sBC.m) < 1e-12 ? Infinity : -1 / sBC.m);
+
+  let h = '';
+
+  h += '<div class="calc-block">';
+  h += '<div class="calc-label">1. Pendiente de AB</div>';
+  h += 'm = (y&#8322; - y&#8321;) / (x&#8322; - x&#8321;)<br>';
+  h += 'm = (' + B.y + ' - ' + A.y + ') / (' + B.x + ' - ' + A.x + ')<br>';
+  if (!sAB.vertical) {
+    h += 'm = ' + (B.y - A.y) + ' / ' + (B.x - A.x);
+    h += '<div class="calc-result">m_AB = ' + fmt(sAB.m, 4) + '</div>';
+  } else {
+    h += '<div class="calc-result">vertical</div>';
+  }
+  h += '</div>';
+
+  h += '<div class="calc-block">';
+  h += '<div class="calc-label">2. Ecuacion de BC (general)</div>';
+  h += 'Ax + By + C = 0<br>';
+  h += 'A = y&#8322;-y&#8321; = ' + (C.y - B.y) + '<br>';
+  h += 'B = x&#8321;-x&#8322; = ' + (B.x - C.x) + '<br>';
+  h += 'C = -(A&middot;x&#8321; + B&middot;y&#8321;)<br>';
+  h += '<div class="calc-result">' + fmtGeneral(lineBC) + '</div>';
+  if (!sBC.vertical) {
+    const bInt = B.y - sBC.m * B.x;
+    h += '<div class="small">' + fmtSlopeIntercept(sBC.m, bInt) + '</div>';
+  }
+  h += '</div>';
+
+  h += '<div class="calc-block">';
+  h += '<div class="calc-label">3. Distancia de A a BC (radio)</div>';
+  h += 'd = |Ax&#8320; + By&#8320; + C| / &radic;(A&sup2;+B&sup2;)<br>';
+  const num = lineBC.A * A.x + lineBC.B * A.y + lineBC.C;
+  const den = Math.hypot(lineBC.A, lineBC.B);
+  h += 'd = |(' + lineBC.A + ')(' + A.x + ') + (' + lineBC.B + ')(' + A.y + ') + (' + lineBC.C + ')| / &radic;(' + (lineBC.A*lineBC.A) + '+' + (lineBC.B*lineBC.B) + ')<br>';
+  h += 'd = ' + fmt(Math.abs(num), 3) + ' / ' + fmt(den, 3);
+  h += '<div class="calc-result">r = ' + fmt(d, 4) + '</div>';
+  h += '</div>';
+
+  h += '<div class="calc-block">';
+  h += '<div class="calc-label">4. Perpendicular a BC (desde A)</div>';
+  h += 'm_&perp; = -1 / m_BC<br>';
+  if (isFinite(mPerp)) {
+    const bInt = A.y - mPerp * A.x;
+    h += 'm_&perp; = ' + fmt(mPerp, 4) + '<br>';
+    h += '<div class="calc-result">' + fmtSlopeIntercept(mPerp, bInt) + '</div>';
+  } else {
+    h += '<div class="calc-result">vertical: x = ' + fmt(A.x) + '</div>';
+  }
+  h += '</div>';
+
+  document.getElementById('calcArea').innerHTML = h;
+}
+
+function updateReport() {
+  const { A, B, C } = getPoints();
+  const sAB = slope(A, B);
+  const sBC = slope(B, C);
+  const lineBC = generalForm(B, C);
+  const lineAB = generalForm(A, B);
+  const d = distPointToLine(A, lineBC);
+  const distAB = dist(A, B);
+  const distBC = dist(B, C);
+  const distAC = dist(A, C);
+  const mPerp = sBC.vertical ? 0 : (Math.abs(sBC.m) < 1e-12 ? Infinity : -1 / sBC.m);
+  const n = +document.getElementById('optRadios').value;
+
+  let h = '';
+  h += '<h3>Fase 2: Calculos principales</h3>';
+  h += '<table><thead><tr><th style="width:22%">Cantidad</th><th>Formula</th><th>Sustitucion</th><th style="width:18%">Resultado</th></tr></thead><tbody>';
+  h += '<tr><td>Pendiente AB</td><td>(y2-y1)/(x2-x1)</td><td>(' + B.y + '-' + A.y + ')/(' + B.x + '-' + A.x + ')</td><td><b>' + (sAB.vertical ? 'vert' : fmt(sAB.m, 4)) + '</b></td></tr>';
+  h += '<tr><td>Pendiente BC</td><td>(y2-y1)/(x2-x1)</td><td>(' + C.y + '-' + B.y + ')/(' + C.x + '-' + B.x + ')</td><td><b>' + (sBC.vertical ? 'vert' : fmt(sBC.m, 4)) + '</b></td></tr>';
+  h += '<tr><td>Ec. AB general</td><td>Ax+By+C=0</td><td>-</td><td><b>' + fmtGeneral(lineAB) + '</b></td></tr>';
+  h += '<tr><td>Ec. BC general</td><td>Ax+By+C=0</td><td>-</td><td><b>' + fmtGeneral(lineBC) + '</b></td></tr>';
+  h += '<tr><td>Dist(A,B)</td><td>&radic;((x2-x1)&sup2;+(y2-y1)&sup2;)</td><td>&radic;(' + Math.pow(B.x-A.x,2) + '+' + Math.pow(B.y-A.y,2) + ')</td><td>' + fmt(distAB, 4) + '</td></tr>';
+  h += '<tr><td>Dist(B,C)</td><td>&radic;(...)</td><td>&radic;(' + Math.pow(C.x-B.x,2) + '+' + Math.pow(C.y-B.y,2) + ')</td><td>' + fmt(distBC, 4) + '</td></tr>';
+  h += '<tr><td>Dist(A,C)</td><td>&radic;(...)</td><td>&radic;(' + Math.pow(C.x-A.x,2) + '+' + Math.pow(C.y-A.y,2) + ')</td><td>' + fmt(distAC, 4) + '</td></tr>';
+  const num = Math.abs(lineBC.A * A.x + lineBC.B * A.y + lineBC.C);
+  const den = Math.hypot(lineBC.A, lineBC.B);
+  h += '<tr><td>Dist A &rarr; BC (<span class="highlight">RADIO</span>)</td><td>|Ax0+By0+C|/&radic;(A&sup2;+B&sup2;)</td><td>' + fmt(num, 3) + '/&radic;' + fmt(den*den, 3) + '</td><td><b>' + fmt(d, 4) + '</b></td></tr>';
+  h += '<tr><td>Pend. perpendicular</td><td>-1/m_BC</td><td>-</td><td><b>' + (isFinite(mPerp) ? fmt(mPerp, 4) : 'vert') + '</b></td></tr>';
+  h += '</tbody></table>';
+
+  h += '<h3>Fase 3: Rectas del mandala (desde A)</h3>';
+  h += '<table><thead><tr><th>#</th><th>Angulo</th><th>Pendiente (m = tan&theta;)</th><th>Ecuacion</th></tr></thead><tbody>';
+  for (let i = 0; i < n; i++) {
+    const theta = (Math.PI * 2 * i) / n;
+    const deg = (i * 360) / n;
+    const cosT = Math.cos(theta);
+    const sinT = Math.sin(theta);
+    let mStr, eqStr;
+    if (Math.abs(cosT) < 1e-9) {
+      mStr = 'indef';
+      eqStr = 'x = ' + fmt(A.x);
+    } else {
+      const m = sinT / cosT;
+      const b = A.y - m * A.x;
+      mStr = fmt(m, 4);
+      eqStr = fmtSlopeIntercept(m, b);
+    }
+    h += '<tr><td>R' + (i + 1) + '</td><td>' + fmt(deg, 1) + '&deg;</td><td>' + mStr + '</td><td>' + eqStr + '</td></tr>';
+  }
+  h += '</tbody></table>';
+
+  h += '<h3>Resumen final</h3>';
+  h += '<table><tbody>';
+  h += '<tr><td><b>Centro del circulo</b></td><td>A(' + fmt(A.x) + ', ' + fmt(A.y) + ')</td></tr>';
+  h += '<tr><td><b>Radio</b></td><td>r = ' + fmt(d, 4) + ' unidades</td></tr>';
+  h += '<tr><td><b>Ecuacion del circulo</b></td><td>(x - ' + fmt(A.x) + ')&sup2; + (y - ' + fmt(A.y) + ')&sup2; = ' + fmt(d*d, 4) + '</td></tr>';
+  h += '<tr><td><b>Relacion BC-circulo</b></td><td>BC es TANGENTE al circulo en P (pie de perpendicular)</td></tr>';
+  const foot = footOfPerpendicular(A, lineBC);
+  h += '<tr><td><b>Punto de tangencia P</b></td><td>(' + fmt(foot.x, 3) + ', ' + fmt(foot.y, 3) + ')</td></tr>';
+  h += '</tbody></table>';
+
+  document.getElementById('reportArea').innerHTML = h;
+}
+
+['Ax','Ay','Bx','By','Cx','Cy'].forEach(id => {
+  document.getElementById(id).addEventListener('input', draw);
+});
+['optMandala','optCirculosInternos','optPoligonos','optEtiquetas','optRejilla'].forEach(id => {
+  document.getElementById(id).addEventListener('change', draw);
+});
+document.getElementById('optRadios').addEventListener('input', (e) => {
+  document.getElementById('optRadiosVal').textContent = e.target.value;
+  draw();
+});
+
+canvas.addEventListener('wheel', (e) => {
+  e.preventDefault();
+  const rect = canvas.getBoundingClientRect();
+  const mx = e.clientX - rect.left;
+  const my = e.clientY - rect.top;
+  const before = s2w(mx, my);
+  const factor = e.deltaY < 0 ? 1.15 : 1/1.15;
+  scale = Math.max(4, Math.min(400, scale * factor));
+  const after = s2w(mx, my);
+  panX += before.x - after.x;
+  panY += before.y - after.y;
+  draw();
+}, { passive: false });
+
+let dragging = false, lastX = 0, lastY = 0;
+canvas.addEventListener('mousedown', (e) => {
+  dragging = true;
+  lastX = e.clientX; lastY = e.clientY;
+});
+window.addEventListener('mousemove', (e) => {
+  if (!dragging) return;
+  const dx = (e.clientX - lastX) / scale;
+  const dy = (e.clientY - lastY) / scale;
+  panX -= dx; panY += dy;
+  lastX = e.clientX; lastY = e.clientY;
+  draw();
+});
+window.addEventListener('mouseup', () => dragging = false);
+
+document.getElementById('btnZoomIn').addEventListener('click', () => { scale *= 1.2; draw(); });
+document.getElementById('btnZoomOut').addEventListener('click', () => { scale /= 1.2; draw(); });
+document.getElementById('btnReset').addEventListener('click', () => { scale = 40; panX = 6; panY = 6; draw(); });
+document.getElementById('btnFit').addEventListener('click', () => {
+  const { A, B, C } = getPoints();
+  const lineBC = generalForm(B, C);
+  const d = distPointToLine(A, lineBC);
+  const xs = [A.x - d, A.x + d, B.x, C.x];
+  const ys = [A.y - d, A.y + d, B.y, C.y];
+  const minX = Math.min(...xs) - 1, maxX = Math.max(...xs) + 1;
+  const minY = Math.min(...ys) - 1, maxY = Math.max(...ys) + 1;
+  panX = (minX + maxX) / 2;
+  panY = (minY + maxY) / 2;
+  scale = Math.min(cssW() / (maxX - minX), cssH() / (maxY - minY)) * 0.9;
+  draw();
+});
+
+function exportPNG() {
+  const link = document.createElement('a');
+  link.download = 'mandala_cartesiano.png';
+  link.href = canvas.toDataURL('image/png');
+  link.click();
+}
+document.getElementById('btnExport').addEventListener('click', exportPNG);
+document.getElementById('btnExport2').addEventListener('click', exportPNG);
+
+document.getElementById('btnCopyReport').addEventListener('click', () => {
+  const el = document.getElementById('reportArea');
+  const text = el.innerText;
+  navigator.clipboard.writeText(text).then(
+    () => alert('Reporte copiado al portapapeles'),
+    () => alert('No se pudo copiar. Selecciona manualmente.')
+  );
+});
+document.getElementById('btnPrint').addEventListener('click', () => window.print());
+
+resizeCanvas();
+</script>
+
+</body>
+</html>
