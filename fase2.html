@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Fase 2 - Aplicaciones de la Recta</title>
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --muted: #666;
+    --line: #d0d0d0;
+    --soft: #f5f5f0;
+    --accent: #c0392b;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 30px 20px;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: #ededea;
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .paper {
+    max-width: 820px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 50px 60px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    border: 1px solid var(--line);
+  }
+  header {
+    text-align: center;
+    border-bottom: 3px double var(--ink);
+    padding-bottom: 18px;
+    margin-bottom: 30px;
+  }
+  header .inst { font-size: 11px; letter-spacing: 2px; color: var(--muted); text-transform: uppercase; }
+  header h1 { margin: 8px 0 4px; font-size: 26px; letter-spacing: 0.5px; }
+  header .sub { font-size: 14px; color: var(--muted); font-style: italic; }
+  .meta {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 6px 20px;
+    font-size: 13px;
+    margin: 20px 0 30px;
+    padding: 14px 18px;
+    background: var(--soft);
+    border-left: 4px solid var(--ink);
+  }
+  .meta span b { text-transform: uppercase; font-size: 11px; letter-spacing: 1px; color: var(--muted); }
+  h2 {
+    font-size: 17px;
+    margin: 30px 0 14px;
+    padding: 8px 12px;
+    background: var(--ink);
+    color: #fff;
+    letter-spacing: 0.5px;
+  }
+  h2 .num {
+    display: inline-block;
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: #fff;
+    color: var(--ink);
+    text-align: center;
+    line-height: 28px;
+    margin-right: 10px;
+    font-weight: bold;
+  }
+  h3 {
+    font-size: 14px;
+    margin: 18px 0 6px;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  p { margin: 8px 0; }
+  .formula {
+    font-family: 'Cambria Math', 'Latin Modern Math', Cambria, Georgia, serif;
+    background: #faf8f2;
+    border-left: 4px solid var(--accent);
+    padding: 12px 18px;
+    margin: 10px 0;
+    font-size: 16px;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+  .formula.block { white-space: normal; }
+  .step { margin: 14px 0; }
+  .result {
+    background: #fff7d6;
+    border: 2px solid #d4a017;
+    padding: 12px 18px;
+    margin: 14px 0;
+    font-family: 'Cambria Math', Cambria, Georgia, serif;
+    font-size: 18px;
+    text-align: center;
+    font-weight: bold;
+  }
+  .result .label { display: block; font-size: 11px; letter-spacing: 1.5px; color: var(--muted); font-weight: normal; text-transform: uppercase; margin-bottom: 4px; }
+  .interp {
+    background: var(--soft);
+    border-left: 4px solid var(--ink);
+    padding: 14px 20px;
+    margin: 14px 0;
+  }
+  .interp b { color: var(--accent); }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 14px 0;
+    font-size: 14px;
+  }
+  thead { background: var(--ink); color: #fff; }
+  th, td { text-align: left; padding: 9px 12px; border: 1px solid var(--line); }
+  tbody tr:nth-child(even) { background: var(--soft); }
+  tbody tr td:last-child { font-family: 'Cambria Math', Cambria, Georgia, serif; font-weight: bold; }
+  .points-list {
+    display: flex; gap: 18px; justify-content: center;
+    margin: 12px 0 4px;
+    flex-wrap: wrap;
+  }
+  .point {
+    font-family: 'Cambria Math', Cambria, Georgia, serif;
+    font-size: 18px;
+    padding: 8px 16px;
+    background: #fff;
+    border: 2px solid var(--ink);
+    min-width: 120px;
+    text-align: center;
+  }
+  .point b { color: var(--accent); font-size: 20px; }
+  .note { font-size: 12px; color: var(--muted); font-style: italic; }
+  footer {
+    margin-top: 40px;
+    padding-top: 16px;
+    border-top: 1px solid var(--line);
+    font-size: 12px;
+    color: var(--muted);
+    text-align: center;
+  }
+  .radical { font-size: 1.1em; }
+  .frac {
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 0.95em;
+    line-height: 1;
+    margin: 0 2px;
+  }
+  .frac .num { display: block; border-bottom: 1.5px solid #000; padding: 0 4px 1px; }
+  .frac .den { display: block; padding: 2px 4px 0; }
+  .actions { margin-top: 30px; text-align: center; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .actions button {
+    background: var(--ink); color: #fff; border: none;
+    padding: 10px 22px;
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+  }
+  .actions button.sec { background: #fff; color: var(--ink); border: 1.5px solid var(--ink); }
+  .actions button:hover { opacity: 0.85; }
+  @media print {
+    body { background: #fff; padding: 0; }
+    .paper { box-shadow: none; border: none; padding: 30px; }
+    .actions { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="paper">
+
+<header>
+  <div class="inst">Instituto Valle de Mexicali &middot; Seccion Preparatoria</div>
+  <h1>Fase 2 &mdash; Aplicaciones de la Recta</h1>
+  <div class="sub">Practica: El Arte de la Recta y el Juego Geometrico</div>
+</header>
+
+<div class="meta">
+  <span><b>Materia</b> Temas Selectos de Matematicas I</span>
+  <span><b>Docente</b> Francisco Sandoval</span>
+  <span><b>Alumno</b> _______________________</span>
+  <span><b>Grupo</b> _______  <b>Fecha</b> __________</span>
+</div>
+
+<p>La practica consiste en situar tres puntos en un plano cartesiano y, a partir de ellos, calcular pendiente, ecuacion general y distancia punto-recta. El resultado final sera el radio de un circulo que se dibujara en Fase 3.</p>
+
+<h3>Puntos base</h3>
+<div class="points-list">
+  <div class="point"><b>A</b>(2, 3)</div>
+  <div class="point"><b>B</b>(8, 7)</div>
+  <div class="point"><b>C</b>(5, 10)</div>
+</div>
+<p class="note" style="text-align:center">Se ubican en un plano cartesiano dibujado a mano (no milimetrico, no impreso).</p>
+
+<!-- ============ EJERCICIO 1 ============ -->
+<h2><span class="num">1</span>Pendiente de la recta AB</h2>
+
+<h3>Formula</h3>
+<div class="formula">
+  m = <span class="frac"><span class="num">y&#8322; &minus; y&#8321;</span><span class="den">x&#8322; &minus; x&#8321;</span></span>
+</div>
+
+<h3>Sustitucion</h3>
+<p>Tomando A(2, 3) como P&#8321; y B(8, 7) como P&#8322;:</p>
+<div class="formula">
+  m = <span class="frac"><span class="num">7 &minus; 3</span><span class="den">8 &minus; 2</span></span>
+  = <span class="frac"><span class="num">4</span><span class="den">6</span></span>
+</div>
+
+<h3>Simplificacion</h3>
+<div class="formula">
+  m = <span class="frac"><span class="num">2</span><span class="den">3</span></span>
+  &asymp; 0.667
+</div>
+
+<div class="result">
+  <span class="label">Pendiente AB</span>
+  m<sub>AB</sub> = 2 / 3
+</div>
+
+<p class="note">Angulo de inclinacion: &theta; = arctan(2/3) &asymp; 33.7&deg;</p>
+
+<!-- ============ EJERCICIO 2 ============ -->
+<h2><span class="num">2</span>Ecuacion general de la recta BC</h2>
+
+<h3>Paso a) Pendiente de BC</h3>
+<div class="formula">
+  m = <span class="frac"><span class="num">y&#8322; &minus; y&#8321;</span><span class="den">x&#8322; &minus; x&#8321;</span></span>
+  = <span class="frac"><span class="num">10 &minus; 7</span><span class="den">5 &minus; 8</span></span>
+  = <span class="frac"><span class="num">3</span><span class="den">&minus;3</span></span>
+  = &minus;1
+</div>
+<p>m<sub>BC</sub> = <b>&minus;1</b></p>
+
+<h3>Paso b) Forma punto-pendiente</h3>
+<p>Usando el punto B(8, 7):</p>
+<div class="formula">
+  y &minus; y&#8321; = m (x &minus; x&#8321;)<br>
+  y &minus; 7 = &minus;1 (x &minus; 8)<br>
+  y &minus; 7 = &minus;x + 8<br>
+  y = &minus;x + 15
+</div>
+
+<h3>Paso c) Forma general  Ax + By + C = 0</h3>
+<p>Pasando todos los terminos al lado izquierdo:</p>
+<div class="formula">
+  x + y &minus; 15 = 0
+</div>
+<p>Coeficientes: A = 1, B = 1, C = &minus;15</p>
+
+<div class="result">
+  <span class="label">Ecuacion general de BC</span>
+  x + y &minus; 15 = 0
+</div>
+
+<!-- ============ EJERCICIO 3 ============ -->
+<h2><span class="num">3</span>Distancia del punto A a la recta BC</h2>
+
+<h3>Formula de distancia punto-recta</h3>
+<div class="formula">
+  d = <span class="frac">
+    <span class="num">| A&middot;x&#8320; + B&middot;y&#8320; + C |</span>
+    <span class="den"><span class="radical">&radic;</span>(A&sup2; + B&sup2;)</span>
+  </span>
+</div>
+<p>Donde (x&#8320;, y&#8320;) es el punto A(2, 3), y los coeficientes A, B, C provienen de la recta BC: x + y &minus; 15 = 0.</p>
+
+<h3>Sustitucion</h3>
+<div class="formula">
+  d = <span class="frac">
+    <span class="num">| (1)(2) + (1)(3) + (&minus;15) |</span>
+    <span class="den"><span class="radical">&radic;</span>(1&sup2; + 1&sup2;)</span>
+  </span>
+</div>
+
+<h3>Operaciones</h3>
+<div class="formula">
+  d = <span class="frac">
+    <span class="num">| 2 + 3 &minus; 15 |</span>
+    <span class="den"><span class="radical">&radic;</span>2</span>
+  </span>
+  = <span class="frac">
+    <span class="num">| &minus;10 |</span>
+    <span class="den"><span class="radical">&radic;</span>2</span>
+  </span>
+  = <span class="frac">
+    <span class="num">10</span>
+    <span class="den"><span class="radical">&radic;</span>2</span>
+  </span>
+</div>
+
+<h3>Racionalizacion</h3>
+<div class="formula">
+  d = <span class="frac">
+    <span class="num">10 &middot; <span class="radical">&radic;</span>2</span>
+    <span class="den"><span class="radical">&radic;</span>2 &middot; <span class="radical">&radic;</span>2</span>
+  </span>
+  = <span class="frac">
+    <span class="num">10<span class="radical">&radic;</span>2</span>
+    <span class="den">2</span>
+  </span>
+  = 5<span class="radical">&radic;</span>2
+</div>
+
+<div class="result">
+  <span class="label">Distancia A a la recta BC</span>
+  d = 5<span class="radical">&radic;</span>2 &asymp; 7.07 unidades
+</div>
+
+<!-- ============ EJERCICIO 4 ============ -->
+<h2><span class="num">4</span>Interpretacion del resultado</h2>
+
+<div class="interp">
+  <p>La distancia obtenida <b>d = 5&radic;2 &asymp; 7.07 u</b> representa la separacion perpendicular entre el punto A y la recta BC. Este valor sera el <b>radio del circulo</b> que se trazara en Fase 3, con <b>centro en A(2, 3)</b>.</p>
+  <p><b>Consecuencia geometrica:</b> como la distancia de A a BC coincide exactamente con el radio, la recta BC resulta <b>tangente</b> a la circunferencia. Es decir, BC toca al circulo en un solo punto, llamado pie de la perpendicular: <b>P(7, 8)</b>.</p>
+</div>
+
+<!-- ============ RESUMEN ============ -->
+<h2>Resumen para el reporte</h2>
+
+<table>
+  <thead>
+    <tr><th>Elemento</th><th>Valor</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Pendiente de AB</td><td>m = 2/3</td></tr>
+    <tr><td>Angulo de inclinacion AB</td><td>&theta; &asymp; 33.7&deg;</td></tr>
+    <tr><td>Pendiente de BC</td><td>m = &minus;1</td></tr>
+    <tr><td>Ecuacion general BC</td><td>x + y &minus; 15 = 0</td></tr>
+    <tr><td>Distancia A &rarr; BC</td><td>d = 5&radic;2 &asymp; 7.07</td></tr>
+    <tr><td>Radio del circulo</td><td>r = 5&radic;2</td></tr>
+    <tr><td>Centro del circulo</td><td>A(2, 3)</td></tr>
+    <tr><td>Punto de tangencia</td><td>P(7, 8)</td></tr>
+  </tbody>
+</table>
+
+<footer>
+  Fase 2 de la practica &laquo;El Arte de la Recta y el Juego Geometrico&raquo; &middot; Instituto Valle de Mexicali
+</footer>
+
+<div class="actions">
+  <button onclick="window.print()">Imprimir / Guardar PDF</button>
+  <button class="sec" onclick="navigator.clipboard.writeText(document.body.innerText).then(() => alert('Reporte copiado'))">Copiar texto</button>
+</div>
+
+</div>
+
+</body>
+</html>
