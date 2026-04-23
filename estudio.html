@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guia de Estudio - Sistemas de Ecuaciones y Ecuacion de la Recta</title>
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --muted: #666;
+    --line: #d0d0d0;
+    --soft: #f5f5f0;
+    --accent: #c0392b;
+    --accent2: #27ae60;
+    --accent3: #2980b9;
+    --accent4: #8e44ad;
+    --yellow: #fff7d6;
+    --yellow-border: #d4a017;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0; padding: 0;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: #ededea;
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.65;
+  }
+  .layout { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; }
+  nav.sidebar {
+    background: var(--ink);
+    color: #fff;
+    padding: 28px 20px;
+    position: sticky; top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
+  nav.sidebar h2 {
+    font-size: 13px; letter-spacing: 2px; text-transform: uppercase;
+    color: #aaa; margin: 0 0 14px; padding-bottom: 10px; border-bottom: 1px solid #444;
+  }
+  nav.sidebar a {
+    display: block; color: #ddd; text-decoration: none;
+    padding: 7px 10px; border-radius: 3px; font-size: 13px;
+    border-left: 3px solid transparent;
+  }
+  nav.sidebar a:hover { background: #2a2a2a; color: #fff; border-left-color: var(--accent); }
+  nav.sidebar a.sub { padding-left: 22px; font-size: 12px; color: #bbb; }
+  nav.sidebar .grp { margin-bottom: 14px; }
+  nav.sidebar .grp-title {
+    font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase;
+    color: #888; margin: 14px 0 6px; padding-left: 10px;
+  }
+  main {
+    padding: 40px 50px;
+    max-width: 980px;
+  }
+  header.main {
+    text-align: center;
+    border-bottom: 3px double var(--ink);
+    padding-bottom: 20px;
+    margin-bottom: 30px;
+  }
+  header.main h1 { margin: 8px 0 6px; font-size: 30px; }
+  header.main p { margin: 0; color: var(--muted); font-style: italic; }
+  section { margin: 40px 0; scroll-margin-top: 20px; }
+  h2.section-title {
+    font-size: 22px;
+    margin: 0 0 16px;
+    padding: 10px 16px;
+    background: var(--ink);
+    color: #fff;
+    letter-spacing: 0.5px;
+  }
+  h2.section-title .num {
+    display: inline-block;
+    width: 30px; height: 30px;
+    background: #fff; color: var(--ink);
+    border-radius: 50%;
+    text-align: center; line-height: 30px;
+    margin-right: 10px;
+    font-weight: bold;
+  }
+  h3.sub-title {
+    font-size: 17px;
+    margin: 24px 0 10px;
+    color: var(--accent);
+    border-left: 5px solid var(--accent);
+    padding-left: 12px;
+    letter-spacing: 0.5px;
+  }
+  h4 {
+    font-size: 14px;
+    margin: 18px 0 8px;
+    color: var(--accent3);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .concept {
+    background: #eaf4fb;
+    border-left: 5px solid var(--accent3);
+    padding: 12px 18px;
+    margin: 14px 0;
+  }
+  .concept b { color: var(--accent3); }
+  .formula {
+    font-family: 'Cambria Math', Cambria, Georgia, serif;
+    background: #faf8f2;
+    border-left: 4px solid var(--accent);
+    padding: 12px 18px;
+    margin: 10px 0;
+    font-size: 17px;
+    overflow-x: auto;
+  }
+  .example {
+    background: #f5f5f0;
+    border: 1px solid var(--line);
+    border-left: 5px solid var(--accent2);
+    padding: 16px 20px;
+    margin: 16px 0;
+    border-radius: 3px;
+  }
+  .example-title {
+    font-weight: bold; font-size: 13px;
+    text-transform: uppercase; letter-spacing: 1.5px;
+    color: var(--accent2);
+    margin-bottom: 10px;
+  }
+  .step {
+    margin: 10px 0;
+    padding: 8px 12px 8px 44px;
+    position: relative;
+    background: #fff;
+    border: 1px solid var(--line);
+  }
+  .step .n {
+    position: absolute; left: 10px; top: 8px;
+    width: 24px; height: 24px; border-radius: 50%;
+    background: var(--ink); color: #fff;
+    text-align: center; line-height: 24px;
+    font-weight: bold; font-size: 12px;
+  }
+  .result {
+    background: var(--yellow);
+    border: 2px solid var(--yellow-border);
+    padding: 10px 16px;
+    margin: 12px 0;
+    font-family: 'Cambria Math', Cambria, Georgia, serif;
+    font-size: 17px;
+    text-align: center;
+    font-weight: bold;
+  }
+  .result .label {
+    display: block; font-size: 11px; letter-spacing: 1.5px;
+    color: var(--muted); font-weight: normal;
+    text-transform: uppercase; margin-bottom: 4px;
+  }
+  .tip {
+    background: #e8f6e8;
+    border-left: 5px solid var(--accent2);
+    padding: 10px 16px;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  .tip b { color: var(--accent2); }
+  .warn {
+    background: #fdecea;
+    border-left: 5px solid var(--accent);
+    padding: 10px 16px;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  .warn b { color: var(--accent); }
+  .frac {
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    font-size: 0.9em;
+    line-height: 1;
+    margin: 0 2px;
+  }
+  .frac .num { display: block; border-bottom: 1.5px solid #000; padding: 0 4px 1px; }
+  .frac .den { display: block; padding: 2px 4px 0; }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  thead { background: var(--ink); color: #fff; }
+  th, td { text-align: left; padding: 8px 12px; border: 1px solid var(--line); }
+  tbody tr:nth-child(even) { background: var(--soft); }
+  svg { display: block; margin: 16px auto; background: #fff; border: 1px solid var(--line); }
+  .practice {
+    background: #fff;
+    border: 2px dashed var(--accent4);
+    padding: 14px 18px;
+    margin: 14px 0;
+    border-radius: 4px;
+  }
+  .practice-title {
+    font-weight: bold; font-size: 13px;
+    text-transform: uppercase; letter-spacing: 1.5px;
+    color: var(--accent4);
+    margin-bottom: 8px;
+  }
+  details {
+    margin: 10px 0;
+    background: var(--soft);
+    border: 1px solid var(--line);
+    padding: 8px 14px;
+    cursor: pointer;
+  }
+  details summary {
+    font-weight: bold; color: var(--accent4);
+    font-size: 13px; letter-spacing: 0.5px;
+  }
+  details[open] { background: #fff; }
+  details > *:not(summary) { cursor: default; margin-top: 8px; }
+  .pill {
+    display: inline-block;
+    padding: 3px 10px;
+    background: var(--ink); color: #fff;
+    font-size: 11px; letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-right: 4px;
+  }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .hamburger {
+    display: none;
+    position: fixed; top: 12px; left: 12px;
+    background: var(--ink); color: #fff;
+    padding: 8px 12px; border: none;
+    font-family: inherit; cursor: pointer; z-index: 100;
+  }
+  @media (max-width: 880px) {
+    .layout { grid-template-columns: 1fr; }
+    nav.sidebar {
+      position: fixed; left: -280px; top: 0; width: 260px;
+      z-index: 99; transition: left 0.25s;
+    }
+    nav.sidebar.open { left: 0; }
+    main { padding: 60px 20px 30px; }
+    .two-col { grid-template-columns: 1fr; }
+    .hamburger { display: block; }
+  }
+  @media print {
+    nav.sidebar, .hamburger { display: none; }
+    .layout { grid-template-columns: 1fr; }
+    body { background: #fff; }
+    main { padding: 20px; max-width: none; }
+    details { page-break-inside: avoid; }
+    details[open] summary { display: none; }
+    details:not([open]) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<button class="hamburger" onclick="document.querySelector('nav.sidebar').classList.toggle('open')">&#9776; Menu</button>
+
+<div class="layout">
+
+<nav class="sidebar">
+  <h2>Guia de estudio</h2>
+
+  <div class="grp">
+    <div class="grp-title">Sistemas 2x2</div>
+    <a href="#intro-sistemas">Introduccion</a>
+    <a href="#grafico" class="sub">&raquo; Metodo grafico</a>
+    <a href="#sustitucion" class="sub">&raquo; Sustitucion</a>
+    <a href="#eliminacion" class="sub">&raquo; Eliminacion</a>
+    <a href="#igualacion" class="sub">&raquo; Igualacion</a>
+    <a href="#comparacion" class="sub">&raquo; Comparacion</a>
+  </div>
+
+  <div class="grp">
+    <div class="grp-title">Ecuacion de la recta</div>
+    <a href="#punto-pendiente">Punto-pendiente</a>
+    <a href="#ordenada-origen">Ordenada al origen</a>
+    <a href="#forma-general">Forma general</a>
+    <a href="#conversiones">Conversiones</a>
+  </div>
+
+  <div class="grp">
+    <div class="grp-title">Practica</div>
+    <a href="#practica-sistemas">Problemas sistemas</a>
+    <a href="#practica-rectas">Problemas rectas</a>
+    <a href="#tips10">Tips para el 10</a>
+  </div>
+</nav>
+
+<main>
+
+<header class="main">
+  <h1>Sistemas de Ecuaciones y Ecuacion de la Recta</h1>
+  <p>Guia de estudio &middot; Explicaciones, ejemplos resueltos y practica</p>
+</header>
+
+<!-- ==================== SECCION 1: SISTEMAS ==================== -->
+
+<section id="intro-sistemas">
+<h2 class="section-title"><span class="num">1</span>Sistemas de Ecuaciones Lineales 2x2</h2>
+
+<div class="concept">
+Un <b>sistema de ecuaciones lineales</b> es un conjunto de dos o mas ecuaciones con las mismas variables. La <b>solucion</b> es el par ordenado (x, y) que satisface <b>todas</b> las ecuaciones a la vez.
+</div>
+
+<p>A lo largo de esta seccion usaremos el mismo sistema para los cuatro metodos, para que veas que todos llegan al mismo resultado:</p>
+
+<div class="formula">
+  <b>Sistema ejemplo:</b><br>
+  (1)&nbsp;&nbsp; 2x + y = 7<br>
+  (2)&nbsp;&nbsp; x &minus; y = &minus;1
+</div>
+
+<p>La solucion es <b>x = 2, y = 3</b>. Vamos a llegar a ella por 4 caminos distintos.</p>
+
+<h4>Tipos de solucion de un sistema</h4>
+<table>
+  <thead><tr><th>Tipo</th><th>Descripcion</th><th>Graficamente</th></tr></thead>
+  <tbody>
+    <tr><td><b>Compatible determinado</b></td><td>Una unica solucion</td><td>Las rectas se cortan en 1 punto</td></tr>
+    <tr><td><b>Compatible indeterminado</b></td><td>Infinitas soluciones</td><td>Las rectas coinciden</td></tr>
+    <tr><td><b>Incompatible</b></td><td>Sin solucion</td><td>Las rectas son paralelas (no se tocan)</td></tr>
+  </tbody>
+</table>
+
+</section>
+
+<!-- METODO GRAFICO -->
+<section id="grafico">
+<h3 class="sub-title"><span class="pill">1.1</span> Metodo grafico</h3>
+
+<div class="concept">
+Consiste en <b>dibujar las dos rectas</b> en el plano cartesiano. El punto donde se cruzan es la solucion.
+</div>
+
+<h4>Pasos</h4>
+<div class="step"><span class="n">1</span>Despeja <i>y</i> en cada ecuacion (pasa a la forma y = mx + b).</div>
+<div class="step"><span class="n">2</span>Construye una tabla de valores para cada recta (elige 2 o 3 valores de x).</div>
+<div class="step"><span class="n">3</span>Ubica los puntos en el plano y traza cada recta.</div>
+<div class="step"><span class="n">4</span>Localiza el punto de interseccion: esa es la solucion (x, y).</div>
+<div class="step"><span class="n">5</span>Verifica sustituyendo en ambas ecuaciones originales.</div>
+
+<div class="example">
+<div class="example-title">Ejemplo resuelto</div>
+<p><b>Despejamos y:</b></p>
+<div class="formula">
+  (1) 2x + y = 7 &nbsp;&rarr;&nbsp; y = &minus;2x + 7<br>
+  (2) x &minus; y = &minus;1 &nbsp;&rarr;&nbsp; y = x + 1
+</div>
+
+<p><b>Tabla de valores:</b></p>
+<div class="two-col">
+  <table>
+    <thead><tr><th colspan="2">y = &minus;2x + 7</th></tr><tr><th>x</th><th>y</th></tr></thead>
+    <tbody><tr><td>0</td><td>7</td></tr><tr><td>2</td><td>3</td></tr><tr><td>3</td><td>1</td></tr></tbody>
+  </table>
+  <table>
+    <thead><tr><th colspan="2">y = x + 1</th></tr><tr><th>x</th><th>y</th></tr></thead>
+    <tbody><tr><td>0</td><td>1</td></tr><tr><td>2</td><td>3</td></tr><tr><td>4</td><td>5</td></tr></tbody>
+  </table>
+</div>
+
+<p><b>Grafica:</b></p>
+
+<svg width="420" height="380" viewBox="0 0 420 380">
+  <!-- grid -->
+  <g stroke="#eee" stroke-width="1">
+    <line x1="30" y1="30" x2="30" y2="350"/><line x1="70" y1="30" x2="70" y2="350"/>
+    <line x1="110" y1="30" x2="110" y2="350"/><line x1="150" y1="30" x2="150" y2="350"/>
+    <line x1="190" y1="30" x2="190" y2="350"/><line x1="230" y1="30" x2="230" y2="350"/>
+    <line x1="270" y1="30" x2="270" y2="350"/><line x1="310" y1="30" x2="310" y2="350"/>
+    <line x1="350" y1="30" x2="350" y2="350"/><line x1="390" y1="30" x2="390" y2="350"/>
+    <line x1="30" y1="30" x2="390" y2="30"/><line x1="30" y1="70" x2="390" y2="70"/>
+    <line x1="30" y1="110" x2="390" y2="110"/><line x1="30" y1="150" x2="390" y2="150"/>
+    <line x1="30" y1="190" x2="390" y2="190"/><line x1="30" y1="230" x2="390" y2="230"/>
+    <line x1="30" y1="270" x2="390" y2="270"/><line x1="30" y1="310" x2="390" y2="310"/>
+    <line x1="30" y1="350" x2="390" y2="350"/>
+  </g>
+  <!-- Axes: origin at (110, 310), scale 40 -->
+  <line x1="30" y1="310" x2="400" y2="310" stroke="#000" stroke-width="1.5"/>
+  <line x1="110" y1="20" x2="110" y2="360" stroke="#000" stroke-width="1.5"/>
+  <text x="400" y="325" font-size="12" font-weight="bold">X</text>
+  <text x="98" y="20" font-size="12" font-weight="bold">Y</text>
+  <text x="100" y="325" font-size="10">0</text>
+  <!-- marks X -->
+  <g font-size="10" text-anchor="middle" fill="#555">
+    <text x="150" y="325">1</text><text x="190" y="325">2</text><text x="230" y="325">3</text>
+    <text x="270" y="325">4</text><text x="310" y="325">5</text><text x="350" y="325">6</text>
+    <text x="70" y="325">-1</text>
+  </g>
+  <!-- marks Y -->
+  <g font-size="10" text-anchor="end" fill="#555">
+    <text x="105" y="274">1</text><text x="105" y="234">2</text><text x="105" y="194">3</text>
+    <text x="105" y="154">4</text><text x="105" y="114">5</text><text x="105" y="74">6</text>
+    <text x="105" y="34">7</text>
+  </g>
+  <!-- line 1: y = -2x + 7 ; passes (0,7)=(110,30), (3.5,0)=(250,310) -->
+  <line x1="70" y1="0" x2="270" y2="400" stroke="#c0392b" stroke-width="2"/>
+  <text x="60" y="50" font-size="12" font-weight="bold" fill="#c0392b">y = -2x+7</text>
+  <!-- line 2: y = x+1 ; passes (0,1)=(110,270), (5,6)=(310,70) -->
+  <line x1="20" y1="360" x2="390" y2="-10" stroke="#27ae60" stroke-width="2"/>
+  <text x="300" y="100" font-size="12" font-weight="bold" fill="#27ae60">y = x+1</text>
+  <!-- intersection at (2,3) = (190, 190) -->
+  <circle cx="190" cy="190" r="5" fill="#000"/>
+  <text x="198" y="185" font-size="12" font-weight="bold">(2, 3)</text>
+</svg>
+
+<div class="result">
+<span class="label">Solucion</span>
+x = 2,&nbsp;&nbsp;y = 3
+</div>
+</div>
+
+<div class="tip">
+<b>Util para:</b> visualizar el problema y entender el tipo de solucion. <b>Limitacion:</b> si la solucion no es entera (ej. x = 2.37) es dificil leerla con precision desde la grafica.
+</div>
+</section>
+
+<!-- METODO SUSTITUCION -->
+<section id="sustitucion">
+<h3 class="sub-title"><span class="pill">1.2</span> Metodo de sustitucion</h3>
+
+<div class="concept">
+Se <b>despeja una variable</b> en una ecuacion y se <b>sustituye</b> esa expresion en la otra.
+</div>
+
+<h4>Pasos</h4>
+<div class="step"><span class="n">1</span>Elige la ecuacion donde sea mas facil despejar (coeficientes 1 o -1).</div>
+<div class="step"><span class="n">2</span>Despeja una variable.</div>
+<div class="step"><span class="n">3</span>Sustituye en la otra ecuacion.</div>
+<div class="step"><span class="n">4</span>Resuelve la ecuacion con una sola variable.</div>
+<div class="step"><span class="n">5</span>Sustituye el valor en el despeje para hallar la otra variable.</div>
+<div class="step"><span class="n">6</span>Verifica en ambas ecuaciones originales.</div>
+
+<div class="example">
+<div class="example-title">Ejemplo resuelto</div>
+<p>Sistema: 2x + y = 7 &nbsp;y&nbsp; x &minus; y = &minus;1</p>
+
+<p><b>Paso 1 &mdash; Despejar x en la ecuacion (2):</b></p>
+<div class="formula">x &minus; y = &minus;1 &nbsp;&rarr;&nbsp; x = y &minus; 1</div>
+
+<p><b>Paso 2 &mdash; Sustituir en la ecuacion (1):</b></p>
+<div class="formula">
+  2(<b>y &minus; 1</b>) + y = 7<br>
+  2y &minus; 2 + y = 7<br>
+  3y = 9<br>
+  <b>y = 3</b>
+</div>
+
+<p><b>Paso 3 &mdash; Sustituir y = 3 en el despeje:</b></p>
+<div class="formula">x = y &minus; 1 = 3 &minus; 1 = <b>2</b></div>
+
+<p><b>Verificacion:</b></p>
+<div class="formula">
+  (1) 2(2) + 3 = 4 + 3 = 7 &check;<br>
+  (2) 2 &minus; 3 = &minus;1 &check;
+</div>
+
+<div class="result"><span class="label">Solucion</span>x = 2,&nbsp;&nbsp;y = 3</div>
+</div>
+
+<div class="tip"><b>Cuando usarlo:</b> cuando alguna variable tiene coeficiente 1 o -1 (se despeja limpio, sin fracciones).</div>
+</section>
+
+<!-- METODO ELIMINACION -->
+<section id="eliminacion">
+<h3 class="sub-title"><span class="pill">1.3</span> Metodo de eliminacion (reduccion o suma-resta)</h3>
+
+<div class="concept">
+Se <b>multiplican las ecuaciones</b> por numeros adecuados para que al <b>sumarlas o restarlas</b> se elimine una variable.
+</div>
+
+<h4>Pasos</h4>
+<div class="step"><span class="n">1</span>Alinea el sistema con las variables en columnas.</div>
+<div class="step"><span class="n">2</span>Elige que variable eliminar.</div>
+<div class="step"><span class="n">3</span>Multiplica cada ecuacion por un factor tal que los coeficientes de esa variable queden opuestos.</div>
+<div class="step"><span class="n">4</span>Suma las dos ecuaciones: la variable elegida desaparece.</div>
+<div class="step"><span class="n">5</span>Resuelve para la variable restante.</div>
+<div class="step"><span class="n">6</span>Sustituye el valor en una ecuacion original para hallar la otra.</div>
+
+<div class="example">
+<div class="example-title">Ejemplo resuelto</div>
+<p>Sistema: 2x + y = 7 &nbsp;y&nbsp; x &minus; y = &minus;1</p>
+
+<p><b>Observacion:</b> los coeficientes de <i>y</i> ya son opuestos (+1 y &minus;1). Sumamos directamente.</p>
+
+<div class="formula">
+&nbsp;&nbsp;2x + y = 7<br>
++&nbsp;x &minus; y = &minus;1<br>
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;<br>
+&nbsp;&nbsp;3x + 0 = 6<br>
+&nbsp;&nbsp;<b>x = 2</b>
+</div>
+
+<p><b>Sustituir x = 2 en (1):</b></p>
+<div class="formula">2(2) + y = 7 &nbsp;&rarr;&nbsp; 4 + y = 7 &nbsp;&rarr;&nbsp; <b>y = 3</b></div>
+
+<div class="result"><span class="label">Solucion</span>x = 2,&nbsp;&nbsp;y = 3</div>
+</div>
+
+<h4>Caso general &mdash; cuando no hay coeficientes opuestos</h4>
+<div class="example">
+<div class="example-title">Ejemplo con multiplicacion</div>
+<p>Sistema: &nbsp; 3x + 2y = 12 &nbsp;y&nbsp; 2x + 5y = 19</p>
+
+<p>Para eliminar <i>x</i>: multiplicamos (1) por 2 y (2) por &minus;3:</p>
+<div class="formula">
+&nbsp;(1)&times;2:&nbsp;&nbsp; 6x + 4y = 24<br>
+(2)&times;(&minus;3): &minus;6x &minus; 15y = &minus;57<br>
+&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0 &minus; 11y = &minus;33<br>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>y = 3</b>
+</div>
+
+<p>Sustituir en (1): 3x + 2(3) = 12 &rarr; 3x = 6 &rarr; <b>x = 2</b></p>
+<div class="result"><span class="label">Solucion</span>x = 2,&nbsp;&nbsp;y = 3</div>
+</div>
+
+<div class="tip"><b>Cuando usarlo:</b> cuando los coeficientes no permiten un despeje limpio (todos distintos de 1). Es el mas usado en sistemas grandes.</div>
+</section>
+
+<!-- METODO IGUALACION -->
+<section id="igualacion">
+<h3 class="sub-title"><span class="pill">1.4</span> Metodo de igualacion</h3>
+
+<div class="concept">
+Se <b>despeja la misma variable</b> en las dos ecuaciones, y luego se <b>igualan</b> las dos expresiones obtenidas.
+</div>
+
+<h4>Pasos</h4>
+<div class="step"><span class="n">1</span>Despeja la misma variable en ambas ecuaciones.</div>
+<div class="step"><span class="n">2</span>Iguala las dos expresiones.</div>
+<div class="step"><span class="n">3</span>Resuelve la ecuacion resultante (una sola variable).</div>
+<div class="step"><span class="n">4</span>Sustituye el valor en cualquier despeje para hallar la otra variable.</div>
+<div class="step"><span class="n">5</span>Verifica.</div>
+
+<div class="example">
+<div class="example-title">Ejemplo resuelto</div>
+<p>Sistema: 2x + y = 7 &nbsp;y&nbsp; x &minus; y = &minus;1</p>
+
+<p><b>Paso 1 &mdash; Despejar y en ambas:</b></p>
+<div class="formula">
+  De (1): y = 7 &minus; 2x<br>
+  De (2): y = x + 1
+</div>
+
+<p><b>Paso 2 &mdash; Igualar:</b></p>
+<div class="formula">
+  7 &minus; 2x = x + 1<br>
+  7 &minus; 1 = x + 2x<br>
+  6 = 3x<br>
+  <b>x = 2</b>
+</div>
+
+<p><b>Paso 3 &mdash; Sustituir en cualquier despeje:</b></p>
+<div class="formula">y = x + 1 = 2 + 1 = <b>3</b></div>
+
+<div class="result"><span class="label">Solucion</span>x = 2,&nbsp;&nbsp;y = 3</div>
+</div>
+
+<div class="tip"><b>Cuando usarlo:</b> cuando ya tienes (o es facil obtener) ambas ecuaciones en la forma y = algo. Ideal si el problema viene en esa forma (ej. y = 2x + 3, y = -x + 6).</div>
+</section>
+
+<!-- COMPARACION -->
+<section id="comparacion">
+<h3 class="sub-title"><span class="pill">1.5</span> Comparacion rapida de los 4 metodos</h3>
+
+<table>
+  <thead><tr><th>Metodo</th><th>Cuando conviene</th><th>Ventaja</th><th>Desventaja</th></tr></thead>
+  <tbody>
+    <tr><td><b>Grafico</b></td><td>Soluciones enteras y el profe pide grafica</td><td>Muy visual</td><td>Impreciso con decimales</td></tr>
+    <tr><td><b>Sustitucion</b></td><td>Una variable con coef. 1 o -1</td><td>Muy directo</td><td>Se complica con fracciones</td></tr>
+    <tr><td><b>Eliminacion</b></td><td>Coeficientes cualesquiera</td><td>Funciona siempre</td><td>Requiere elegir multiplicadores</td></tr>
+    <tr><td><b>Igualacion</b></td><td>Ya tienes y = ... en ambas</td><td>Muy limpio</td><td>Requiere dos despejes</td></tr>
+  </tbody>
+</table>
+
+</section>
+
+<!-- ==================== SECCION 2: RECTAS ==================== -->
+
+<section id="punto-pendiente">
+<h2 class="section-title"><span class="num">2</span>Formas de la ecuacion de la recta</h2>
+
+<p>Una recta en el plano se puede escribir de varias formas equivalentes. Cada una es util en un contexto diferente. Las tres principales son: <b>punto-pendiente</b>, <b>pendiente-ordenada al origen</b> y <b>general</b>.</p>
+
+<h3 class="sub-title"><span class="pill">2.1</span> Forma punto-pendiente</h3>
+
+<div class="concept">
+Sirve cuando conoces <b>un punto</b> (x&#8321;, y&#8321;) de la recta y su <b>pendiente</b> m.
+</div>
+
+<h4>Formula</h4>
+<div class="formula">
+  y &minus; y&#8321; = m (x &minus; x&#8321;)
+</div>
+
+<p>Donde:</p>
+<ul>
+  <li><b>m</b> es la pendiente: m = <span class="frac"><span class="num">y&#8322; &minus; y&#8321;</span><span class="den">x&#8322; &minus; x&#8321;</span></span></li>
+  <li><b>(x&#8321;, y&#8321;)</b> es un punto que pertenece a la recta</li>
+</ul>
+
+<div class="example">
+<div class="example-title">Ejemplo 1 &mdash; con punto y pendiente</div>
+<p>Halla la ecuacion de la recta que pasa por <b>P(2, 3)</b> con pendiente <b>m = 2/3</b>.</p>
+
+<div class="formula">
+  y &minus; y&#8321; = m (x &minus; x&#8321;)<br>
+  y &minus; 3 = <span class="frac"><span class="num">2</span><span class="den">3</span></span> (x &minus; 2)
+</div>
+
+<div class="result"><span class="label">Ecuacion punto-pendiente</span>
+y &minus; 3 = (2/3)(x &minus; 2)
+</div>
+</div>
+
+<div class="example">
+<div class="example-title">Ejemplo 2 &mdash; con dos puntos</div>
+<p>Halla la ecuacion de la recta que pasa por <b>A(1, 2)</b> y <b>B(5, 10)</b>.</p>
+
+<p><b>Paso 1 &mdash; Calcular pendiente:</b></p>
+<div class="formula">
+  m = <span class="frac"><span class="num">10 &minus; 2</span><span class="den">5 &minus; 1</span></span>
+  = <span class="frac"><span class="num">8</span><span class="den">4</span></span> = 2
+</div>
+
+<p><b>Paso 2 &mdash; Elegir un punto y aplicar la formula:</b></p>
+<div class="formula">
+  y &minus; 2 = 2 (x &minus; 1)
+</div>
+
+<div class="result"><span class="label">Ecuacion</span>y &minus; 2 = 2(x &minus; 1)</div>
+</div>
+
+<svg width="380" height="320" viewBox="0 0 380 320">
+  <g stroke="#eee"><line x1="40" y1="30" x2="40" y2="290"/><line x1="80" y1="30" x2="80" y2="290"/>
+  <line x1="120" y1="30" x2="120" y2="290"/><line x1="160" y1="30" x2="160" y2="290"/>
+  <line x1="200" y1="30" x2="200" y2="290"/><line x1="240" y1="30" x2="240" y2="290"/>
+  <line x1="280" y1="30" x2="280" y2="290"/><line x1="320" y1="30" x2="320" y2="290"/>
+  <line x1="40" y1="30" x2="360" y2="30"/><line x1="40" y1="70" x2="360" y2="70"/>
+  <line x1="40" y1="110" x2="360" y2="110"/><line x1="40" y1="150" x2="360" y2="150"/>
+  <line x1="40" y1="190" x2="360" y2="190"/><line x1="40" y1="230" x2="360" y2="230"/>
+  <line x1="40" y1="270" x2="360" y2="270"/></g>
+  <!-- axes origin (40, 270), scale 40 -->
+  <line x1="30" y1="270" x2="370" y2="270" stroke="#000" stroke-width="1.5"/>
+  <line x1="40" y1="20" x2="40" y2="300" stroke="#000" stroke-width="1.5"/>
+  <text x="365" y="285" font-size="12" font-weight="bold">X</text>
+  <text x="25" y="20" font-size="12" font-weight="bold">Y</text>
+  <!-- marks -->
+  <g font-size="10" text-anchor="middle" fill="#555">
+    <text x="80" y="285">1</text><text x="120" y="285">2</text><text x="160" y="285">3</text>
+    <text x="200" y="285">4</text><text x="240" y="285">5</text><text x="280" y="285">6</text>
+  </g>
+  <g font-size="10" text-anchor="end" fill="#555">
+    <text x="35" y="235">1</text><text x="35" y="195">2</text><text x="35" y="155">3</text>
+    <text x="35" y="115">4</text><text x="35" y="75">5</text>
+  </g>
+  <!-- line from P(2,3)=(120,150) slope 2/3, y = (2/3)(x-2)+3 -->
+  <!-- at x=-1: y = (2/3)(-3)+3=1 -> (0,230) .. at x=8: y=(2/3)(6)+3=7 -> (360,10) -->
+  <line x1="0" y1="230" x2="360" y2="10" stroke="#c0392b" stroke-width="2"/>
+  <!-- slope triangle at P -->
+  <line x1="120" y1="150" x2="240" y2="150" stroke="#8e44ad" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="240" y1="150" x2="240" y2="70" stroke="#8e44ad" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="180" y="165" font-size="11" fill="#8e44ad">&Delta;x=3</text>
+  <text x="245" y="115" font-size="11" fill="#8e44ad">&Delta;y=2</text>
+  <!-- point P -->
+  <circle cx="120" cy="150" r="4" fill="#000"/>
+  <text x="95" y="143" font-size="12" font-weight="bold">P(2,3)</text>
+</svg>
+
+</section>
+
+<!-- ORDENADA AL ORIGEN -->
+<section id="ordenada-origen">
+<h3 class="sub-title"><span class="pill">2.2</span> Forma pendiente-ordenada al origen</h3>
+
+<div class="concept">
+Tambien llamada <b>forma explicita</b> o <b>reducida</b>. Se usa cuando quieres leer directamente <b>la pendiente</b> y <b>donde la recta cruza el eje Y</b>.
+</div>
+
+<h4>Formula</h4>
+<div class="formula">
+  y = mx + b
+</div>
+
+<p>Donde:</p>
+<ul>
+  <li><b>m</b> = pendiente (inclinacion de la recta)</li>
+  <li><b>b</b> = ordenada al origen (valor de y cuando x = 0, o sea el punto donde cruza el eje Y)</li>
+</ul>
+
+<div class="tip"><b>Pregunta comun:</b> "orientada al origen" es lo mismo que "ordenada al origen". El termino correcto es <b>ordenada al origen</b>.</div>
+
+<div class="example">
+<div class="example-title">Ejemplo 1 &mdash; Leer directo</div>
+<p>Dada la recta <b>y = 3x &minus; 5</b>, identifica m y b.</p>
+<div class="formula">
+  m = 3 &nbsp;&nbsp;(pendiente)<br>
+  b = &minus;5 &nbsp;&nbsp;(corta el eje Y en el punto (0, &minus;5))
+</div>
+</div>
+
+<div class="example">
+<div class="example-title">Ejemplo 2 &mdash; Obtenerla desde punto-pendiente</div>
+<p>De y &minus; 3 = (2/3)(x &minus; 2), despeja para obtener y = mx + b.</p>
+<div class="formula">
+  y &minus; 3 = <span class="frac"><span class="num">2</span><span class="den">3</span></span>x &minus; <span class="frac"><span class="num">4</span><span class="den">3</span></span><br>
+  y = <span class="frac"><span class="num">2</span><span class="den">3</span></span>x &minus; <span class="frac"><span class="num">4</span><span class="den">3</span></span> + 3<br>
+  y = <span class="frac"><span class="num">2</span><span class="den">3</span></span>x + <span class="frac"><span class="num">5</span><span class="den">3</span></span>
+</div>
+<div class="result"><span class="label">Forma reducida</span>y = (2/3)x + 5/3</div>
+<p>Pendiente m = 2/3, ordenada al origen b = 5/3.</p>
+</div>
+
+<h4>Interpretacion grafica de m y b</h4>
+
+<svg width="380" height="320" viewBox="0 0 380 320">
+  <g stroke="#eee"><line x1="40" y1="30" x2="40" y2="290"/><line x1="80" y1="30" x2="80" y2="290"/>
+  <line x1="120" y1="30" x2="120" y2="290"/><line x1="160" y1="30" x2="160" y2="290"/>
+  <line x1="200" y1="30" x2="200" y2="290"/><line x1="240" y1="30" x2="240" y2="290"/>
+  <line x1="280" y1="30" x2="280" y2="290"/><line x1="320" y1="30" x2="320" y2="290"/>
+  <line x1="40" y1="30" x2="360" y2="30"/><line x1="40" y1="70" x2="360" y2="70"/>
+  <line x1="40" y1="110" x2="360" y2="110"/><line x1="40" y1="150" x2="360" y2="150"/>
+  <line x1="40" y1="190" x2="360" y2="190"/><line x1="40" y1="230" x2="360" y2="230"/>
+  <line x1="40" y1="270" x2="360" y2="270"/></g>
+  <!-- axes origin (40, 190), scale 40 -->
+  <line x1="30" y1="190" x2="370" y2="190" stroke="#000" stroke-width="1.5"/>
+  <line x1="40" y1="20" x2="40" y2="300" stroke="#000" stroke-width="1.5"/>
+  <text x="365" y="205" font-size="12" font-weight="bold">X</text>
+  <text x="25" y="20" font-size="12" font-weight="bold">Y</text>
+  <g font-size="10" text-anchor="middle" fill="#555">
+    <text x="80" y="205">1</text><text x="120" y="205">2</text><text x="160" y="205">3</text><text x="200" y="205">4</text>
+  </g>
+  <g font-size="10" text-anchor="end" fill="#555">
+    <text x="35" y="155">1</text><text x="35" y="115">2</text><text x="35" y="75">3</text>
+    <text x="35" y="235">-1</text><text x="35" y="275">-2</text>
+  </g>
+  <!-- y = 2x - 1; at x=0, y=-1 -> (40, 230); at x=3, y=5 -> (160, -50) beyond; use x=-0.5,y=-2 (20,270) to x=2,y=3 (120,70)-->
+  <line x1="0" y1="270" x2="240" y2="-30" stroke="#c0392b" stroke-width="2"/>
+  <text x="210" y="25" font-size="12" font-weight="bold" fill="#c0392b">y = 2x - 1</text>
+  <!-- y intercept -->
+  <circle cx="40" cy="230" r="5" fill="#2980b9"/>
+  <text x="10" y="250" font-size="11" font-weight="bold" fill="#2980b9">b = -1</text>
+  <!-- slope triangle between (0,-1)=(40,230) and (1,1)=(80,150) -->
+  <line x1="40" y1="230" x2="80" y2="230" stroke="#8e44ad" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <line x1="80" y1="230" x2="80" y2="150" stroke="#8e44ad" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="55" y="245" font-size="10" fill="#8e44ad">1</text>
+  <text x="88" y="195" font-size="10" fill="#8e44ad">m=2</text>
+</svg>
+
+<p class="tip"><b>Regla visual:</b> la recta cruza el eje Y en <b>b</b>. Por cada 1 que avanzas a la derecha, subes <b>m</b> unidades.</p>
+</section>
+
+<!-- FORMA GENERAL -->
+<section id="forma-general">
+<h3 class="sub-title"><span class="pill">2.3</span> Forma general</h3>
+
+<div class="concept">
+Es la forma <b>estandar</b> con todo igualado a cero. Se usa para calcular <b>distancias punto-recta</b>, verificar si un punto pertenece a la recta, o para formatos uniformes en problemas.
+</div>
+
+<h4>Formula</h4>
+<div class="formula">
+  Ax + By + C = 0
+</div>
+
+<p>Donde A, B y C son coeficientes constantes (normalmente enteros). Por convencion <b>A &ge; 0</b>.</p>
+
+<div class="example">
+<div class="example-title">Ejemplo 1 &mdash; desde punto-pendiente</div>
+<p>Convierte y &minus; 3 = (2/3)(x &minus; 2) a forma general.</p>
+<div class="formula">
+  y &minus; 3 = <span class="frac"><span class="num">2</span><span class="den">3</span></span>(x &minus; 2)<br>
+  3(y &minus; 3) = 2(x &minus; 2)  &nbsp;&nbsp;<span class="note">&larr; multiplicar por 3</span><br>
+  3y &minus; 9 = 2x &minus; 4<br>
+  0 = 2x &minus; 4 &minus; 3y + 9<br>
+  2x &minus; 3y + 5 = 0
+</div>
+<div class="result"><span class="label">Forma general</span>2x &minus; 3y + 5 = 0</div>
+<p>Coeficientes: A = 2, B = &minus;3, C = 5.</p>
+</div>
+
+<div class="example">
+<div class="example-title">Ejemplo 2 &mdash; desde dos puntos (recta BC de la practica)</div>
+<p>Halla la forma general de la recta que pasa por B(8, 7) y C(5, 10).</p>
+
+<p><b>Paso 1 &mdash; Pendiente:</b></p>
+<div class="formula">
+  m = <span class="frac"><span class="num">10 &minus; 7</span><span class="den">5 &minus; 8</span></span>
+  = <span class="frac"><span class="num">3</span><span class="den">&minus;3</span></span> = &minus;1
+</div>
+
+<p><b>Paso 2 &mdash; Punto-pendiente con B(8, 7):</b></p>
+<div class="formula">y &minus; 7 = &minus;1(x &minus; 8)</div>
+
+<p><b>Paso 3 &mdash; Pasar a general:</b></p>
+<div class="formula">
+  y &minus; 7 = &minus;x + 8<br>
+  x + y &minus; 15 = 0
+</div>
+<div class="result"><span class="label">Forma general</span>x + y &minus; 15 = 0</div>
+<p>A = 1, B = 1, C = &minus;15.</p>
+</div>
+
+<h4>Verificacion: pertenece un punto a la recta?</h4>
+<p>Sustituye las coordenadas en la forma general. Si da 0, pertenece.</p>
+<div class="formula">
+  &iquest;Pertenece B(8, 7) a x + y &minus; 15 = 0?<br>
+  8 + 7 &minus; 15 = 0 &check; SI
+</div>
+
+</section>
+
+<!-- CONVERSIONES -->
+<section id="conversiones">
+<h3 class="sub-title"><span class="pill">2.4</span> Conversiones entre las tres formas</h3>
+
+<table>
+  <thead><tr><th>De</th><th>A</th><th>Como</th></tr></thead>
+  <tbody>
+    <tr><td>Punto-pendiente</td><td>y = mx + b</td><td>Distribuir y despejar y</td></tr>
+    <tr><td>Punto-pendiente</td><td>General</td><td>Multiplicar por denominador, pasar todo a la izquierda</td></tr>
+    <tr><td>y = mx + b</td><td>Punto-pendiente</td><td>Usa el punto (0, b): y &minus; b = m(x &minus; 0)</td></tr>
+    <tr><td>y = mx + b</td><td>General</td><td>mx &minus; y + b = 0, luego multiplicar para quitar fracciones</td></tr>
+    <tr><td>General</td><td>y = mx + b</td><td>Despejar y: m = &minus;A/B, b = &minus;C/B</td></tr>
+    <tr><td>General</td><td>Punto-pendiente</td><td>Primero obtener m y un punto cualquiera (ej. con x=0), luego aplicar formula</td></tr>
+  </tbody>
+</table>
+
+<div class="example">
+<div class="example-title">Ejemplo &mdash; De general a las otras dos</div>
+<p>Dada <b>2x &minus; 3y + 5 = 0</b>, obtener las otras formas.</p>
+
+<p><b>&rarr; y = mx + b</b></p>
+<div class="formula">
+  2x &minus; 3y + 5 = 0<br>
+  &minus;3y = &minus;2x &minus; 5<br>
+  y = <span class="frac"><span class="num">2</span><span class="den">3</span></span>x + <span class="frac"><span class="num">5</span><span class="den">3</span></span>
+</div>
+
+<p><b>&rarr; punto-pendiente</b> (usando el punto (0, 5/3)):</p>
+<div class="formula">
+  y &minus; <span class="frac"><span class="num">5</span><span class="den">3</span></span> = <span class="frac"><span class="num">2</span><span class="den">3</span></span>(x &minus; 0)
+</div>
+</div>
+
+</section>
+
+<!-- ==================== PRACTICA ==================== -->
+
+<section id="practica-sistemas">
+<h2 class="section-title"><span class="num">3</span>Practica: Sistemas de ecuaciones</h2>
+
+<p>Resuelve los siguientes sistemas usando el metodo indicado. Despliega la solucion cuando termines para verificar.</p>
+
+<div class="practice">
+<div class="practice-title">Ejercicio 1 &mdash; Metodo grafico</div>
+<p>Resuelve graficamente:</p>
+<div class="formula">x + y = 5 &nbsp;&nbsp;y&nbsp;&nbsp; x &minus; y = 1</div>
+<details>
+<summary>Ver solucion</summary>
+<p>Despejando: y = 5 &minus; x &nbsp;y&nbsp; y = x &minus; 1</p>
+<p>Se cruzan en (3, 2). <b>Solucion: x = 3, y = 2</b>.</p>
+<p>Verificacion: 3+2=5 &check;, 3&minus;2=1 &check;</p>
+</details>
+</div>
+
+<div class="practice">
+<div class="practice-title">Ejercicio 2 &mdash; Sustitucion</div>
+<div class="formula">3x + y = 10 &nbsp;&nbsp;y&nbsp;&nbsp; x + 2y = 10</div>
+<details>
+<summary>Ver solucion</summary>
+<p>De la (1): y = 10 &minus; 3x.</p>
+<p>Sustituir en (2): x + 2(10 &minus; 3x) = 10 &rarr; x + 20 &minus; 6x = 10 &rarr; &minus;5x = &minus;10 &rarr; <b>x = 2</b></p>
+<p>y = 10 &minus; 3(2) = 4. <b>Solucion: x = 2, y = 4</b></p>
+</details>
+</div>
+
+<div class="practice">
+<div class="practice-title">Ejercicio 3 &mdash; Eliminacion</div>
+<div class="formula">5x + 3y = 21 &nbsp;&nbsp;y&nbsp;&nbsp; 2x &minus; 3y = &minus;7</div>
+<details>
+<summary>Ver solucion</summary>
+<p>Sumamos ambas ecuaciones (los coef. de y son opuestos): 7x = 14 &rarr; <b>x = 2</b></p>
+<p>Sustituir en (1): 5(2) + 3y = 21 &rarr; 3y = 11 &rarr; <b>y = 11/3</b></p>
+<p><b>Solucion: x = 2, y = 11/3</b></p>
+</details>
+</div>
+
+<div class="practice">
+<div class="practice-title">Ejercicio 4 &mdash; Igualacion</div>
+<div class="formula">y = 2x &minus; 1 &nbsp;&nbsp;y&nbsp;&nbsp; y = &minus;x + 8</div>
+<details>
+<summary>Ver solucion</summary>
+<p>Igualando: 2x &minus; 1 = &minus;x + 8 &rarr; 3x = 9 &rarr; <b>x = 3</b></p>
+<p>y = 2(3) &minus; 1 = 5. <b>Solucion: x = 3, y = 5</b></p>
+</details>
+</div>
+
+<div class="practice">
+<div class="practice-title">Ejercicio 5 &mdash; Metodo libre (reto)</div>
+<div class="formula">4x &minus; 3y = 2 &nbsp;&nbsp;y&nbsp;&nbsp; 2x + 5y = 16</div>
+<details>
+<summary>Ver solucion</summary>
+<p>Por eliminacion, multiplicamos (2) por &minus;2: &minus;4x &minus; 10y = &minus;32. Sumamos con (1):</p>
+<p>&minus;13y = &minus;30 &rarr; <b>y = 30/13 &asymp; 2.31</b></p>
+<p>Sustituir: 4x = 2 + 3(30/13) = 2 + 90/13 = (26+90)/13 = 116/13 &rarr; <b>x = 29/13 &asymp; 2.23</b></p>
+</details>
+</div>
+
+</section>
+
+<section id="practica-rectas">
+<h2 class="section-title"><span class="num">4</span>Practica: Ecuacion de la recta</h2>
+
+<div class="practice">
+<div class="practice-title">Ejercicio 1</div>
+<p>Halla la ecuacion punto-pendiente de la recta que pasa por P(&minus;1, 4) con pendiente m = 3.</p>
+<details>
+<summary>Ver solucion</summary>
+<p>y &minus; 4 = 3(x &minus; (&minus;1)) &rarr; <b>y &minus; 4 = 3(x + 1)</b></p>
+</details>
+</div>
+
+<div class="practice">
+<div class="practice-title">Ejercicio 2</div>
+<p>Halla la ecuacion reducida de la recta que pasa por A(2, 1) y B(6, 9).</p>
+<details>
+<summary>Ver solucion</summary>
+<p>m = (9&minus;1)/(6&minus;2) = 8/4 = 2</p>
+<p>y &minus; 1 = 2(x &minus; 2) &rarr; y = 2x &minus; 3</p>
+<p><b>y = 2x &minus; 3</b>  (pendiente 2, ordenada al origen &minus;3)</p>
+</details>
+</div>
+
+<div class="practice">
+<div class="practice-title">Ejercicio 3</div>
+<p>Pasa a forma general: y = &minus;<span class="frac"><span class="num">1</span><span class="den">2</span></span>x + 4</p>
+<details>
+<summary>Ver solucion</summary>
+<p>Multiplicar todo por 2: 2y = &minus;x + 8 &rarr; x + 2y &minus; 8 = 0</p>
+<p><b>x + 2y &minus; 8 = 0</b></p>
+</details>
+</div>
+
+<div class="practice">
+<div class="practice-title">Ejercicio 4</div>
+<p>Dada 3x + 4y &minus; 12 = 0, halla su pendiente y su ordenada al origen.</p>
+<details>
+<summary>Ver solucion</summary>
+<p>Despejamos y: 4y = &minus;3x + 12 &rarr; y = &minus;(3/4)x + 3</p>
+<p><b>m = &minus;3/4, b = 3</b></p>
+</details>
+</div>
+
+<div class="practice">
+<div class="practice-title">Ejercicio 5 (reto)</div>
+<p>La recta pasa por (3, &minus;2) y es paralela a y = 4x + 1. Escribe su forma general.</p>
+<details>
+<summary>Ver solucion</summary>
+<p>Paralela &rarr; misma pendiente: m = 4.</p>
+<p>Punto-pendiente: y &minus; (&minus;2) = 4(x &minus; 3) &rarr; y + 2 = 4x &minus; 12 &rarr; 4x &minus; y &minus; 14 = 0</p>
+<p><b>4x &minus; y &minus; 14 = 0</b></p>
+</details>
+</div>
+
+</section>
+
+<!-- ==================== TIPS ==================== -->
+
+<section id="tips10">
+<h2 class="section-title"><span class="num">5</span>Tips para sacar 10</h2>
+
+<div class="tip"><b>1. Siempre verifica.</b> Sustituye tu solucion en las ecuaciones originales. Si no da, revisa.</div>
+
+<div class="tip"><b>2. Cuida los signos.</b> El 90% de los errores son por un menos que se convierte en mas al distribuir.</div>
+
+<div class="tip"><b>3. Elige el metodo correcto.</b> Si hay un coeficiente 1 o &minus;1, usa sustitucion. Si los coeficientes son grandes, usa eliminacion.</div>
+
+<div class="tip"><b>4. Trabaja con fracciones sin miedo.</b> No tienes que convertir a decimales. Mantener 2/3 es mas preciso que 0.666666.</div>
+
+<div class="tip"><b>5. Dibuja una grafica aunque sea chica.</b> Te ayuda a visualizar que la solucion tiene sentido (ej. si te da x=&minus;100 y los datos son entre 0 y 10, algo esta mal).</div>
+
+<div class="tip"><b>6. Escribe los pasos.</b> Si solo escribes el resultado, pierdes puntos por procedimiento. Los profes premian el orden.</div>
+
+<div class="tip"><b>7. Aprende a reconocer casos especiales.</b> Si al resolver te da 0 = 0, son infinitas soluciones. Si te da 0 = 5 (algo imposible), no hay solucion.</div>
+
+<div class="tip"><b>8. Practica.</b> Haz minimo 5 ejercicios de cada metodo. La mecanica se memoriza con repeticion, no con entenderla una vez.</div>
+
+<div class="warn"><b>Errores comunes a evitar:</b>
+<ul style="margin: 6px 0 0 0;">
+<li>Olvidar cambiar el signo al pasar un termino del otro lado del =.</li>
+<li>Confundir m = &Delta;y/&Delta;x (subida/avance) con &Delta;x/&Delta;y.</li>
+<li>Reducir mal: 4/6 = 2/3, no 2/6.</li>
+<li>En forma general, dejar A negativo (por convencion A &ge; 0).</li>
+<li>No leer el enunciado: a veces piden la ecuacion, a veces el punto de interseccion, a veces el valor de una sola variable.</li>
+</ul></div>
+
+</section>
+
+<footer style="text-align: center; padding: 40px 0 20px; color: var(--muted); font-size: 12px; border-top: 1px solid var(--line); margin-top: 40px;">
+  Guia de estudio &middot; Matematicas &middot; Hecha con enfoque en comprension paso a paso
+</footer>
+
+</main>
+</div>
+
+<script>
+  document.querySelectorAll('nav.sidebar a').forEach(a => {
+    a.addEventListener('click', () => {
+      document.querySelector('nav.sidebar').classList.remove('open');
+    });
+  });
+</script>
+
+</body>
+</html>
