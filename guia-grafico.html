@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Guia Rapida - Metodo Grafico</title>
+<style>
+  :root {
+    --ink: #1a1a1a;
+    --muted: #666;
+    --line: #d0d0d0;
+    --soft: #f5f5f0;
+    --accent: #c0392b;
+    --accent2: #27ae60;
+    --accent3: #2980b9;
+    --yellow: #fff7d6;
+    --yellow-border: #d4a017;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; padding: 30px 20px;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: #ededea;
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.6;
+  }
+  .paper {
+    max-width: 780px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 40px 48px;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+    border: 1px solid var(--line);
+  }
+  header {
+    text-align: center;
+    border-bottom: 3px double var(--ink);
+    padding-bottom: 14px;
+    margin-bottom: 24px;
+  }
+  header .tag {
+    display: inline-block;
+    background: var(--accent);
+    color: #fff;
+    padding: 3px 12px;
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  header h1 { margin: 4px 0; font-size: 26px; }
+  header p { margin: 0; color: var(--muted); font-style: italic; font-size: 14px; }
+  h2 {
+    font-size: 16px;
+    margin: 28px 0 12px;
+    padding: 8px 14px;
+    background: var(--ink);
+    color: #fff;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  h2 .num {
+    display: inline-block;
+    width: 24px; height: 24px;
+    background: #fff; color: var(--ink);
+    border-radius: 50%;
+    text-align: center; line-height: 24px;
+    margin-right: 8px;
+    font-weight: bold; font-size: 13px;
+  }
+  .concept {
+    background: #eaf4fb;
+    border-left: 5px solid var(--accent3);
+    padding: 12px 16px;
+    margin: 14px 0;
+    font-size: 15px;
+  }
+  .concept b { color: var(--accent3); }
+  .steps-list {
+    counter-reset: stepcount;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .steps-list li {
+    counter-increment: stepcount;
+    position: relative;
+    padding: 12px 14px 12px 52px;
+    margin: 8px 0;
+    background: var(--soft);
+    border-left: 4px solid var(--ink);
+  }
+  .steps-list li::before {
+    content: counter(stepcount);
+    position: absolute; left: 12px; top: 50%;
+    transform: translateY(-50%);
+    width: 28px; height: 28px;
+    background: var(--ink); color: #fff;
+    border-radius: 50%;
+    text-align: center; line-height: 28px;
+    font-weight: bold; font-size: 13px;
+  }
+  .steps-list li b { color: var(--accent); }
+  .formula {
+    font-family: 'Cambria Math', Cambria, Georgia, serif;
+    background: #faf8f2;
+    border-left: 4px solid var(--accent);
+    padding: 10px 16px;
+    margin: 10px 0;
+    font-size: 16px;
+  }
+  .example {
+    background: var(--soft);
+    border: 1px solid var(--line);
+    border-left: 5px solid var(--accent2);
+    padding: 14px 18px;
+    margin: 14px 0;
+  }
+  .example-title {
+    font-weight: bold; font-size: 12px;
+    text-transform: uppercase; letter-spacing: 1.5px;
+    color: var(--accent2);
+    margin-bottom: 8px;
+  }
+  .result {
+    background: var(--yellow);
+    border: 2px solid var(--yellow-border);
+    padding: 10px 16px;
+    margin: 12px 0;
+    font-family: 'Cambria Math', Cambria, Georgia, serif;
+    font-size: 17px;
+    text-align: center;
+    font-weight: bold;
+  }
+  .result .label {
+    display: block; font-size: 11px; letter-spacing: 1.5px;
+    color: var(--muted); font-weight: normal;
+    text-transform: uppercase; margin-bottom: 4px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 12px 0;
+    font-size: 14px;
+  }
+  thead { background: var(--ink); color: #fff; }
+  th, td { text-align: left; padding: 8px 12px; border: 1px solid var(--line); }
+  tbody tr:nth-child(even) { background: var(--soft); }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  @media (max-width: 600px) { .two-col { grid-template-columns: 1fr; } }
+  svg { display: block; margin: 14px auto; background: #fff; border: 1px solid var(--line); max-width: 100%; height: auto; }
+  .tip {
+    background: #e8f6e8;
+    border-left: 5px solid var(--accent2);
+    padding: 10px 14px;
+    margin: 10px 0;
+    font-size: 14px;
+  }
+  .tip b { color: var(--accent2); }
+  .warn {
+    background: #fdecea;
+    border-left: 5px solid var(--accent);
+    padding: 10px 14px;
+    margin: 10px 0;
+    font-size: 14px;
+  }
+  .warn b { color: var(--accent); }
+  .checklist { list-style: none; padding: 0; }
+  .checklist li {
+    position: relative;
+    padding: 6px 0 6px 30px;
+    border-bottom: 1px dashed var(--line);
+  }
+  .checklist li::before {
+    content: "";
+    position: absolute; left: 2px; top: 10px;
+    width: 16px; height: 16px;
+    border: 2px solid var(--ink);
+    border-radius: 2px;
+  }
+  .pros-cons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin: 14px 0;
+  }
+  @media (max-width: 600px) { .pros-cons { grid-template-columns: 1fr; } }
+  .pros, .cons {
+    padding: 12px 16px;
+    border-radius: 3px;
+  }
+  .pros { background: #e8f6e8; border-left: 4px solid var(--accent2); }
+  .cons { background: #fdecea; border-left: 4px solid var(--accent); }
+  .pros .title, .cons .title {
+    font-weight: bold; font-size: 12px;
+    text-transform: uppercase; letter-spacing: 1.5px;
+    margin-bottom: 6px;
+  }
+  .pros .title { color: var(--accent2); }
+  .cons .title { color: var(--accent); }
+  .pros ul, .cons ul { margin: 0; padding-left: 18px; font-size: 14px; }
+  .back {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 8px 16px;
+    background: transparent;
+    color: var(--ink);
+    text-decoration: none;
+    border: 1.5px solid var(--ink);
+    font-size: 13px;
+  }
+  .back:hover { background: var(--ink); color: #fff; }
+  .actions { margin-top: 30px; text-align: center; display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+  .actions button {
+    background: var(--ink); color: #fff; border: none;
+    padding: 10px 22px;
+    font-family: inherit;
+    font-size: 13px;
+    cursor: pointer;
+    letter-spacing: 0.5px;
+  }
+  .actions button.sec { background: #fff; color: var(--ink); border: 1.5px solid var(--ink); }
+  @media print {
+    body { background: #fff; padding: 0; }
+    .paper { box-shadow: none; border: none; padding: 20px; }
+    .actions, .back { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="paper">
+
+<header>
+  <span class="tag">Guia Rapida</span>
+  <h1>Metodo Grafico</h1>
+  <p>Sistemas de ecuaciones lineales 2x2 &middot; Resumen para estudiar</p>
+</header>
+
+<!-- Que es -->
+<h2><span class="num">1</span>Que es</h2>
+<div class="concept">
+Resolver un sistema <b>dibujando las dos rectas</b> en el plano cartesiano. El <b>punto donde se cruzan</b> es la solucion (x, y).
+</div>
+
+<!-- Los 5 pasos -->
+<h2><span class="num">2</span>Los 5 pasos (memorizalos)</h2>
+<ol class="steps-list">
+  <li><b>Despeja y</b> en cada ecuacion &rarr; llegar a la forma y = mx + b</li>
+  <li><b>Tabla de valores</b>: elige 2 o 3 valores de x y calcula y para cada recta</li>
+  <li><b>Grafica</b> ambas rectas en el mismo plano</li>
+  <li><b>Lee</b> el punto donde se cruzan</li>
+  <li><b>Verifica</b> sustituyendo (x, y) en las ecuaciones originales</li>
+</ol>
+
+<!-- Ejemplo -->
+<h2><span class="num">3</span>Ejemplo clave</h2>
+<div class="example">
+<div class="example-title">Sistema</div>
+<div class="formula">
+  (1)&nbsp;&nbsp;2x + y = 7<br>
+  (2)&nbsp;&nbsp;x &minus; y = &minus;1
+</div>
+
+<p><b>Paso 1 &mdash; Despejar y:</b></p>
+<div class="formula">
+  y = &minus;2x + 7<br>
+  y = x + 1
+</div>
+
+<p><b>Paso 2 &mdash; Tabla de valores:</b></p>
+<div class="two-col">
+  <table>
+    <thead><tr><th colspan="2">y = &minus;2x + 7</th></tr><tr><th>x</th><th>y</th></tr></thead>
+    <tbody><tr><td>0</td><td>7</td></tr><tr><td>2</td><td>3</td></tr><tr><td>3</td><td>1</td></tr></tbody>
+  </table>
+  <table>
+    <thead><tr><th colspan="2">y = x + 1</th></tr><tr><th>x</th><th>y</th></tr></thead>
+    <tbody><tr><td>0</td><td>1</td></tr><tr><td>2</td><td>3</td></tr><tr><td>4</td><td>5</td></tr></tbody>
+  </table>
+</div>
+
+<p><b>Paso 3 &mdash; Grafica:</b></p>
+<svg width="400" height="340" viewBox="0 0 400 340">
+  <g stroke="#eee" stroke-width="1">
+    <line x1="40" y1="20" x2="40" y2="310"/><line x1="80" y1="20" x2="80" y2="310"/>
+    <line x1="120" y1="20" x2="120" y2="310"/><line x1="160" y1="20" x2="160" y2="310"/>
+    <line x1="200" y1="20" x2="200" y2="310"/><line x1="240" y1="20" x2="240" y2="310"/>
+    <line x1="280" y1="20" x2="280" y2="310"/><line x1="320" y1="20" x2="320" y2="310"/>
+    <line x1="360" y1="20" x2="360" y2="310"/>
+    <line x1="20" y1="30" x2="380" y2="30"/><line x1="20" y1="70" x2="380" y2="70"/>
+    <line x1="20" y1="110" x2="380" y2="110"/><line x1="20" y1="150" x2="380" y2="150"/>
+    <line x1="20" y1="190" x2="380" y2="190"/><line x1="20" y1="230" x2="380" y2="230"/>
+    <line x1="20" y1="270" x2="380" y2="270"/><line x1="20" y1="310" x2="380" y2="310"/>
+  </g>
+  <!-- Axes origin (40, 270), scale 40 -->
+  <line x1="20" y1="270" x2="390" y2="270" stroke="#000" stroke-width="1.5"/>
+  <line x1="40" y1="10" x2="40" y2="320" stroke="#000" stroke-width="1.5"/>
+  <text x="385" y="285" font-size="11" font-weight="bold">X</text>
+  <text x="25" y="14" font-size="11" font-weight="bold">Y</text>
+  <g font-size="10" text-anchor="middle" fill="#555">
+    <text x="80" y="285">1</text><text x="120" y="285">2</text><text x="160" y="285">3</text>
+    <text x="200" y="285">4</text><text x="240" y="285">5</text><text x="280" y="285">6</text>
+  </g>
+  <g font-size="10" text-anchor="end" fill="#555">
+    <text x="35" y="234">1</text><text x="35" y="194">2</text><text x="35" y="154">3</text>
+    <text x="35" y="114">4</text><text x="35" y="74">5</text><text x="35" y="34">6</text>
+  </g>
+  <!-- y = -2x+7: at x=-0.5, y=8 -> (20,-50); x=5,y=-3 -> (240,390); draw safely -->
+  <line x1="20" y1="30" x2="260" y2="330" stroke="#c0392b" stroke-width="2"/>
+  <text x="70" y="55" font-size="12" font-weight="bold" fill="#c0392b">y = -2x + 7</text>
+  <!-- y = x+1: at x=-1,y=0 -> (0,270); at x=6,y=7 -> (280, -10) -->
+  <line x1="0" y1="310" x2="320" y2="-10" stroke="#27ae60" stroke-width="2"/>
+  <text x="280" y="60" font-size="12" font-weight="bold" fill="#27ae60">y = x + 1</text>
+  <!-- Intersection (2,3) = (120, 150) -->
+  <circle cx="120" cy="150" r="6" fill="#000"/>
+  <text x="130" y="145" font-size="12" font-weight="bold">(2, 3)</text>
+</svg>
+
+<div class="result">
+  <span class="label">Solucion</span>
+  x = 2, y = 3
+</div>
+
+<p><b>Paso 5 &mdash; Verificar:</b></p>
+<div class="formula">
+  (1) 2(2) + 3 = 7 &check;<br>
+  (2) 2 &minus; 3 = &minus;1 &check;
+</div>
+</div>
+
+<!-- Tipos de solucion -->
+<h2><span class="num">4</span>Los 3 tipos de solucion</h2>
+<table>
+  <thead><tr><th>Graficamente</th><th>Tipo</th><th>Soluciones</th></tr></thead>
+  <tbody>
+    <tr><td>Se cruzan en 1 punto</td><td>Compatible determinado</td><td>1</td></tr>
+    <tr><td>Coinciden (misma recta)</td><td>Compatible indeterminado</td><td>infinitas</td></tr>
+    <tr><td>Paralelas sin tocarse</td><td>Incompatible</td><td>0</td></tr>
+  </tbody>
+</table>
+
+<!-- Ventajas y desventajas -->
+<h2><span class="num">5</span>Cuando usarlo y cuando no</h2>
+<div class="pros-cons">
+  <div class="pros">
+    <div class="title">Usalo cuando</div>
+    <ul>
+      <li>La solucion es entera y sencilla</li>
+      <li>El profe pide ver la grafica</li>
+      <li>Quieres visualizar el problema</li>
+    </ul>
+  </div>
+  <div class="cons">
+    <div class="title">Evitalo cuando</div>
+    <ul>
+      <li>Los numeros son decimales feos (x = 2.37)</li>
+      <li>No tienes regla o papel cuadriculado</li>
+      <li>Necesitas precision total</li>
+    </ul>
+  </div>
+</div>
+
+<!-- Errores -->
+<h2><span class="num">6</span>Errores que cuestan puntos</h2>
+<div class="warn">
+<ul style="margin: 4px 0 0 0;">
+  <li>No marcar escala igual en ambos ejes</li>
+  <li>Leer mal el punto de interseccion (confundir 2.5 con 3)</li>
+  <li>Olvidar verificar en las ecuaciones originales</li>
+  <li>No etiquetar las rectas con su ecuacion</li>
+  <li>Usar tabla con pocos valores (minimo 2 por recta)</li>
+</ul>
+</div>
+
+<!-- Checklist -->
+<h2><span class="num">7</span>Checklist antes de entregar</h2>
+<ul class="checklist">
+  <li>Ambas rectas tienen su ecuacion escrita al lado</li>
+  <li>El punto de interseccion esta marcado con un circulo</li>
+  <li>Escribiste "Solucion: x = ?, y = ?"</li>
+  <li>Verificaste el resultado en las dos ecuaciones originales</li>
+  <li>Los ejes estan numerados y etiquetados (X, Y)</li>
+  <li>La grafica esta hecha con regla, no a pulso</li>
+</ul>
+
+<!-- Tip final -->
+<div class="tip" style="margin-top: 24px;">
+<b>Tip final:</b> si dibujas en hoja blanca (no cuadriculada), usa regla para marcar rayitas de 1 cm en los ejes. Es lo que usan en exámenes formales.
+</div>
+
+<a href="estudio.html" class="back">&larr; Volver a la guia completa</a>
+
+<div class="actions">
+  <button onclick="window.print()">Imprimir / Guardar PDF</button>
+  <button class="sec" onclick="navigator.clipboard.writeText(document.body.innerText).then(() => alert('Guia copiada'))">Copiar texto</button>
+</div>
+
+</div>
+
+</body>
+</html>
